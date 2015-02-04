@@ -2,7 +2,7 @@
 using System.Collections;
 
 public abstract class Person : MonoBehaviour {
-
+	
 	// Use this for initialization
 	void Start () {
 	
