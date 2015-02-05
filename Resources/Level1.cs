@@ -24,7 +24,7 @@ public class Level1 : MonoBehaviour {
 	GameObject[,] gameObjectBoard;
 
 	int height, width;
-	float gridWidth = 6f;
+	float gridWidth;
 
 	// Use this for initialization
 	void Start () 
@@ -32,21 +32,33 @@ public class Level1 : MonoBehaviour {
 		
 		height = setupBoard.GetLength(0);
 		width = setupBoard.GetLength(1);
+		gridWidth = this.transform.localScale.x/(float)height;
+
+		print(gridWidth);
 
 		gameObjectBoard = new GameObject[height, width];
 
 		this.transform.localScale = new Vector3(height*gridWidth, 1, width*gridWidth);
 
 		// place people there
-		for(int r = 0; r < width; r++)
+		for(int c = 0; c < width; c++)
 		{
-			for(int c = 0; c < height; c++)
+			for(int r = 0; r < height; r++)
 			{
-				if(setupBoard[r,c] == 1)	// normal person
+				if(setupBoard[r,c] == 0)	// normal person
+				{
+
+					GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/EmptySpace"));
+					g.transform.position = new Vector3(gridWidth*c-(height/2*gridWidth), 
+																						 0.05f, gridWidth*r-(width/2*gridWidth));
+					g.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
+					gameObjectBoard[r,c] = g;
+				}
+				else if(setupBoard[r,c] == 1)	// normal person
 				{
 					GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Person"));
-					g.transform.position = new Vector3(gridWidth*r-(width/2*gridWidth), 
-																						 1f, gridWidth*c-(height/2*gridWidth));
+					g.transform.position = new Vector3(gridWidth*c-(height/2*gridWidth), 
+																						 1f, gridWidth*r-(width/2*gridWidth));
 					gameObjectBoard[r,c] = g;
 				}
 			}
