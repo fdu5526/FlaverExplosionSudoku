@@ -82,9 +82,10 @@ public class Level1 : MonoBehaviour {
 		gameObjectBoard[r,c] = g;
 	}
 
-	
-	// Update is called once per frame
-	void Update () 
+
+
+
+	void CheckClick()
 	{
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
@@ -100,8 +101,16 @@ public class Level1 : MonoBehaviour {
 				int r = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
 				int c = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
 
-				AddPieceToBoard(currentPiece, r, c);
+				AddPieceToBoard(currentPiece, r, c);	
 			}
 		}
+	}
+
+
+	
+	// Update is called once per frame
+	void Update () 
+	{
+		CheckClick();
 	}
 }
