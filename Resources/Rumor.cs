@@ -30,41 +30,82 @@ public class Rumor : MonoBehaviour {
 			return;
 		}
 
+		if (this.y - 1 > 0) {
+			if(board[this.x, this.y-1] != null && !(board[this.x, this.y-1] is EmptySpace)){
+				Person p = board[this.x, this.y-1].GetComponent<Person>();
+				if(!p.activated){
+					p.Activate();
+				}
+			}
+		}
+		
+		if (this.y + 1 < height) {
+			if(board[this.x, this.y+1] != null && !(board[this.x, this.y+1] is EmptySpace)){
+				Person p = board[this.x, this.y+1].GetComponent<Person>();
+				if(!p.activated){
+					p.Activate();
+				}
+			}
+		}
+
 		if(this.x - 1 > 0){
 
+			// same y
+			if(board[this.x-1, this.y] != null && !(board[this.x-1, this.y] is EmptySpace)){
+				Person p = board[this.x-1, this.y].GetComponent<Person>();
+				if(!p.activated){
+					p.Activate();
+				}
+			}
 
 			if(this.y -	1 > 0){
+				if(board[this.x-1, this.y-1] != null && !(board[this.x-1, this.y-1] is EmptySpace)){
+					Person p = board[this.x-1, this.y-1].GetComponent<Person>();
+					if(!p.activated){
+						p.Activate();
+					}
+				}
 			}
 			
 			if(this.y + 1 < height){
+				if(board[this.x-1, this.y+1] != null && !(board[this.x-1, this.y+1] is EmptySpace)){
+					Person p = board[this.x-1, this.y+1].GetComponent<Person>();
+					if(!p.activated){
+						p.Activate();
+					}
+				}
 			}
 		}
-		if(this.x - 2 > 0){
-			if(this.y -	2 > 0){
-			}
-			
-			if(this.y + 2 < height){
-			}
-		}
+
 		if(this.x + 1 < width){
+			// same y
+			if(board[this.x+1, this.y] != null && !(board[this.x+1, this.y] is EmptySpace)){
+				Person p = board[this.x+1, this.y].GetComponent<Person>();
+				if(!p.activated){
+					p.Activate();
+				}
+			}
+
 			if(this.y -	1 > 0){
+				if(board[this.x+1, this.y-1] != null && !(board[this.x+1, this.y-1] is EmptySpace)){
+					Person p = board[this.x+1, this.y-1].GetComponent<Person>();
+					if(!p.activated){
+						p.Activate();
+					}
+				}
 			}
 			
 			if(this.y + 1 < height){
-			}
-		}
-		if(this.x + 2 < width){
-			if(this.y -	2 > 0){
-			}
-			
-			if(this.y + 2 < height){
+				if(board[this.x+1, this.y+1] != null && !(board[this.x+1, this.y+1] is EmptySpace)){
+					Person p = board[this.x+1, this.y+1].GetComponent<Person>();
+					if(!p.activated){
+						p.Activate();
+					}
+				}
 			}
 		}
 
+
 	}
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

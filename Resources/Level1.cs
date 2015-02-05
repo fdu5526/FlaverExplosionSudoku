@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 using System.Collections.Generic;
 
-
-
 public class Level1 : MonoBehaviour {
 
 	public Text percentageComplete;
@@ -30,20 +28,42 @@ public class Level1 : MonoBehaviour {
 	int[] setupPlayerPieces = new int[1]{1};
 
 	
-	GameObject[,] gameObjectBoard;
+	public GameObject[,] gameObjectBoard;
 	List<int> playerPieces;
 	int currentPlayerPieceIndex = 0;
 
-	int height, width;
+	public int height, width;
 	float gridWidth;
 
 	void SetupUI(){
+		Button quitButton = GameObject.Find ("Quit").GetComponent<Button>();
+		Button resetButton = GameObject.Find ("Clear").GetComponent<Button>();
+		Button startButton = GameObject.Find ("Activate").GetComponent<Button>();
+
+	}
+
+	void endGame(){
+		Application.Quit ();
+	}
+
+	void resetPieces(){
+		//TODO
+	}
+
+	void activateRumor(){
+		GameObject r = GameObject.FindGameObjectWithTag ("rumor");
+		if (r != null) {
+
+			r.GetComponent<Rumor>().Infect ();
+		}
 	}
 
 	// Use this for initialization
 	void Start () 
 	{
-		
+
+		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
+
 		height = setupBoard.GetLength(0);
 		width = setupBoard.GetLength(1);
 		gridWidth = 30f/(float)height;
@@ -69,7 +89,6 @@ public class Level1 : MonoBehaviour {
 
 					gameObjectBoard[r,c] = g;
 				}
-
 
 				AddPieceToBoard(setupBoard[r,c], r, c);
 
@@ -97,7 +116,9 @@ public class Level1 : MonoBehaviour {
 			g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Person"));
 			g.transform.position = new Vector3(gridWidth*c-(height/2*gridWidth), 
 																				 1f, gridWidth*r-(width/2*gridWidth));
+			g.GetComponent<Person>().setPosition(r,c);
 		}
+
 
 		gameObjectBoard[r,c] = g;
 	}
@@ -106,6 +127,25 @@ public class Level1 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		// update percentage covered, done quickly
+		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
+		int total = persons.Length;
+		int covered = 0;
+		foreach (GameObject p in persons) {
+			if(p.GetComponent<Person>().activated){
+				covered++;
+			}
+		}
+
+		float percent = 0f;
+
+		if (total > 0) {
+			percent = (covered/total) * 100;
+		} 
+
+		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
+
+
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
