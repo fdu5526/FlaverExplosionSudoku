@@ -3,6 +3,9 @@ using System.Collections;
 
 public abstract class Person : MonoBehaviour {
 	
+	public int x;
+	public int y;
+
 	// Use this for initialization
 	void Start () {
 	
