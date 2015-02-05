@@ -159,20 +159,23 @@ public class Level1 : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
 		{
 			// hit empty space, place down player's piece
-			if(hit.collider.tag.Equals("emptySpace") && playerPieces.Count != 0)
+			if(hit.collider.tag.Equals("emptySpace"))
 			{
-				// get and remove player's piece
-				int currentPiece = playerPieces[currentPlayerPieceIndex];
-				playerPieces.RemoveAt(currentPlayerPieceIndex);
+				if(playerPieces.Count != 0)
+				{
+					// get and remove player's piece
+					int currentPiece = playerPieces[currentPlayerPieceIndex];
+					playerPieces.RemoveAt(currentPlayerPieceIndex);
 
-				// calculate this piece's index
-				int r = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
-				int c = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
+					// calculate this piece's index
+					int r = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
+					int c = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
 
-				AddPieceToBoard(currentPiece, r, c);
+					AddPieceToBoard(currentPiece, r, c);
 
-				Destroy(hit.collider);
-				Destroy(hit.transform.gameObject);
+					Destroy(hit.collider);
+					Destroy(hit.transform.gameObject);
+				}
 			}
 			// activate piece
 			else
@@ -181,7 +184,9 @@ public class Level1 : MonoBehaviour {
 				int c = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
 
 				if(gameObjectBoard[r,c] != null)
+				{
 					gameObjectBoard[r,c].GetComponent<Person>().Activate();
+				}
 			}
 		}
 	}

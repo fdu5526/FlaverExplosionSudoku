@@ -12,6 +12,7 @@ public class Normal : Person {
 	}
 
 	override public void Activate (){
+		
 		activated = true;
 
 		if (this.x != null && this.y != null) {
