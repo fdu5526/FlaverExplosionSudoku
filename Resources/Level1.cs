@@ -40,6 +40,10 @@ public class Level1 : MonoBehaviour {
 		Button resetButton = GameObject.Find ("Clear").GetComponent<Button>();
 		Button startButton = GameObject.Find ("Activate").GetComponent<Button>();
 
+		startButton.onClick.AddListener (activateRumor);
+		quitButton.onClick.AddListener (endGame);
+		resetButton.onClick.AddListener (resetPieces);
+
 	}
 
 	void endGame(){
@@ -90,6 +94,7 @@ public class Level1 : MonoBehaviour {
 					gameObjectBoard[r,c] = g;
 				}
 
+
 				AddPieceToBoard(setupBoard[r,c], r, c);
 
 			}
@@ -101,6 +106,8 @@ public class Level1 : MonoBehaviour {
 
 	void AddPieceToBoard(int i, int r, int c)
 	{
+
+
 		GameObject g = null;
 		if(i == 0)	// normal person
 		{
@@ -123,9 +130,10 @@ public class Level1 : MonoBehaviour {
 		gameObjectBoard[r,c] = g;
 	}
 
-	
-	// Update is called once per frame
-	void Update () 
+
+
+
+	void CheckClick()
 	{
 		// update percentage covered, done quickly
 		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
@@ -150,6 +158,7 @@ public class Level1 : MonoBehaviour {
 		RaycastHit hit;
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
 		{
+			// hit empty space, place down player's piece
 			if(hit.collider.tag.Equals("emptySpace") && playerPieces.Count != 0)
 			{
 				// get and remove player's piece
@@ -157,11 +166,31 @@ public class Level1 : MonoBehaviour {
 				playerPieces.RemoveAt(currentPlayerPieceIndex);
 
 				// calculate this piece's index
+				int r = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
+				int c = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
+
+				AddPieceToBoard(currentPiece, r, c);
+
+				Destroy(hit.collider);
+				Destroy(hit.transform.gameObject);
+			}
+			// activate piece
+			else
+			{
 				int r = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
 				int c = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
 
-				AddPieceToBoard(currentPiece, r, c);
+				if(gameObjectBoard[r,c] != null)
+					gameObjectBoard[r,c].GetComponent<Person>().Activate();
 			}
 		}
+	}
+
+
+	
+	// Update is called once per frame
+	void Update () 
+	{
+		CheckClick();
 	}
 }
