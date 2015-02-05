@@ -11,7 +11,7 @@ public class Level1 : MonoBehaviour {
 	 	2: blogger
 	 	3: grandma
 	 */
-	int[,] board = new int[,]
+	int[,] setupBoard = new int[,]
 	{
 		{0, 0, 1, 0, 0},
 		{0, 1, 0, 1, 0},
@@ -20,31 +20,34 @@ public class Level1 : MonoBehaviour {
 		{0, 0, 0, 1, 0},
 	};
 
-	int colCount, rowCount;
+	// contains all the pieces, in the right coordinates
+	GameObject[,] gameObjectBoard;
+
+	int height, width;
 	float gridWidth = 6f;
 
 	// Use this for initialization
 	void Start () 
 	{
 		
-		colCount = board.GetLength(0);
-		rowCount = board.GetLength(1);
+		height = setupBoard.GetLength(0);
+		width = setupBoard.GetLength(1);
 
-		print(colCount);
-		print(board.Length);
+		gameObjectBoard = new GameObject[height, width];
 
-		this.transform.localScale = new Vector3(colCount*gridWidth, 1, rowCount*gridWidth);
+		this.transform.localScale = new Vector3(height*gridWidth, 1, width*gridWidth);
 
 		// place people there
-		for(int r = 0; r < rowCount; r++)
+		for(int r = 0; r < width; r++)
 		{
-			for(int c = 0; c < colCount; c++)
+			for(int c = 0; c < height; c++)
 			{
-				if(board[r,c] == 1)
+				if(setupBoard[r,c] == 1)	// normal person
 				{
 					GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Person"));
-					g.transform.position = new Vector3(gridWidth*r-(rowCount/2*gridWidth), 
-																						 1f, gridWidth*c-(colCount/2*gridWidth));
+					g.transform.position = new Vector3(gridWidth*r-(width/2*gridWidth), 
+																						 1f, gridWidth*c-(height/2*gridWidth));
+					gameObjectBoard[r,c] = g;
 				}
 			}
 		}
