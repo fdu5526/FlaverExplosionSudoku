@@ -30,11 +30,11 @@ public class Level1 : MonoBehaviour {
 	int[] setupPlayerPieces = new int[1]{1};
 
 	
-	GameObject[,] gameObjectBoard;
+	public GameObject[,] gameObjectBoard;
 	List<int> playerPieces;
 	int currentPlayerPieceIndex = 0;
 
-	int height, width;
+	public int height, width;
 	float gridWidth;
 
 	void SetupUI(){
