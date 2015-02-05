@@ -25,6 +25,7 @@ public class Normal : Person {
 		// grab diagonals
 	}
 
+
 	// Update is called once per frame
 	void Update () {
 	
