@@ -14,7 +14,12 @@ public class EmptySpace : MonoBehaviour {
 
 	void OnMouseOver()
  	{
-   	print (gameObject.name);
+   	gameObject.renderer.material.color = Color.green;
+ 	}
+
+ 	void OnMouseExit()
+ 	{
+   	gameObject.renderer.material.color = Color.white;
  	}
 
 }
