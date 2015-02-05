@@ -6,15 +6,11 @@ public abstract class Person : MonoBehaviour {
 	public int x;
 	public int y;
 
-	// Use this for initialization
-	void Start () {
-	
+	public void setPosition(int r, int c){
+		this.x = r;
+		this.y = c;
 	}
 
 	public abstract void Activate ();
-
-	// Update is called once per frame
-	void Update () {
 	
-	}
 }
