@@ -58,19 +58,7 @@ public class Level1 : MonoBehaviour {
 		{
 			for(int r = 0; r < height; r++)
 			{
-
-				if(setupBoard[r,c] == 1)	// normal person
-				{
-					GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Person"));
-					g.transform.position = new Vector3(gridWidth*r-(width/2*gridWidth), 
-																						 1f, gridWidth*c-(height/2*gridWidth));
-					// add position in matrix to person
-					g.GetComponent<Person>().setPosition(r,c);
-
-					gameObjectBoard[r,c] = g;
-				}
-
-
+				
 				AddPieceToBoard(setupBoard[r,c], r, c);
 
 			}
@@ -82,6 +70,8 @@ public class Level1 : MonoBehaviour {
 
 	void AddPieceToBoard(int i, int r, int c)
 	{
+
+
 		GameObject g = null;
 		if(i == 0)	// normal person
 		{
@@ -111,6 +101,7 @@ public class Level1 : MonoBehaviour {
 		RaycastHit hit;
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
 		{
+			// hit empty space, place down player's piece
 			if(hit.collider.tag.Equals("emptySpace") && playerPieces.Count != 0)
 			{
 				// get and remove player's piece
@@ -118,10 +109,22 @@ public class Level1 : MonoBehaviour {
 				playerPieces.RemoveAt(currentPlayerPieceIndex);
 
 				// calculate this piece's index
+				int r = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
+				int c = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
+
+				AddPieceToBoard(currentPiece, r, c);
+
+				Destroy(hit.collider);
+				Destroy(hit.transform.gameObject);
+			}
+			// activate piece
+			else
+			{
 				int r = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
 				int c = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
 
-				AddPieceToBoard(currentPiece, r, c);	
+				if(gameObjectBoard[r,c] != null)
+					gameObjectBoard[r,c].GetComponent<Person>().Activate();
 			}
 		}
 	}
