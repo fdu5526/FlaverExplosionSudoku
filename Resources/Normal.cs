@@ -17,17 +17,44 @@ public class Normal : Person {
 
 		if (this.x != null && this.y != null) {
 			// find and activate unactivated nearby persons within range and pattern
+			GameObject[,] board = GameObject.Find ("GameMaster").GetComponent<Level1>().gameObjectBoard;
+			int height = GameObject.Find ("GameMaster").GetComponent<Level1>().height;
+			int width = GameObject.Find ("GameMaster").GetComponent<Level1>().width;
+			// too tired to be clever about this
+			if(this.x - 1 > 0){
+				if(this.y -	1 > 0){
+					if(board[this.x-1, this.y-1] != null){
+					
+					}
+				}
 
+				if(this.y + 1 < height){
+				}
+			}
+			if(this.x - 2 > 0){
+				if(this.y -	2 > 0){
+				}
+				
+				if(this.y + 2 < height){
+				}
+			}
+			if(this.x + 1 < width){
+				if(this.y -	1 > 0){
+				}
+				
+				if(this.y + 1 < height){
+				}
+			}
+			if(this.x + 2 < width){
+				if(this.y -	2 > 0){
+				}
+				
+				if(this.y + 2 < height){
+				}
+			}
 		
 		}
 
-		print ("HEllo world");
-		// grab diagonals
-	}
 
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
