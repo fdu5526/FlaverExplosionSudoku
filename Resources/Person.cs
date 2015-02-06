@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Person : MonoBehaviour {
 	
@@ -12,6 +13,6 @@ public abstract class Person : MonoBehaviour {
 		this.y = c;
 	}
 
-	public abstract void Activate ();
+	public abstract List<Person> Activate ();
 	
 }

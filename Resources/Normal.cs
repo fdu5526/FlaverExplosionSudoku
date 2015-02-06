@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Normal : Person {
 	
@@ -11,9 +12,10 @@ public class Normal : Person {
 		range = 2;
 	}
 
-	override public void Activate (){
+	override public List<Person> Activate (){
 		
 		activated = true;
+		List<Person> toBeActivated = new List<Person> ();
 
 		if (this.x != null && this.y != null) {
 			// find and activate unactivated nearby persons within range and pattern
@@ -25,17 +27,24 @@ public class Normal : Person {
 				if(this.y -	1 > 0){
 					if(board[this.x-1, this.y-1] != null && !(board[this.x-1, this.y-1] is EmptySpace)){
 						Person p = board[this.x-1, this.y-1].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+						}
+						/*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 				if(this.y + 1 < height){
 					if(board[this.x-1, this.y+1] != null && !(board[this.x-1, this.y+1] is EmptySpace)){
 						Person p = board[this.x-1, this.y+1].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+						}/*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 			}
@@ -43,18 +52,25 @@ public class Normal : Person {
 				if(this.y -	2 > 0){
 					if(board[this.x-2, this.y-2] != null && !(board[this.x-2, this.y-2] is EmptySpace)){
 						Person p = board[this.x-2, this.y-2].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+						}
+						/*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 				
 				if(this.y + 2 < height){
 					if(board[this.x-2, this.y+2] != null && !(board[this.x-2, this.y+2] is EmptySpace)){
 						Person p = board[this.x-2, this.y+2].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+						}/*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 			}
@@ -62,18 +78,25 @@ public class Normal : Person {
 				if(this.y -	1 > 0){
 					if(board[this.x+1, this.y-1] != null && !(board[this.x+1, this.y-1] is EmptySpace)){
 						Person p = board[this.x+1, this.y-1].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+						}/*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 				
 				if(this.y + 1 < height){
 					if(board[this.x+1, this.y+1] != null && !(board[this.x+1, this.y+1] is EmptySpace)){
 						Person p = board[this.x+1, this.y+1].GetComponent<Person>();
+						// check for null
+						if(p != null){
+							toBeActivated.Add(p);
+						}/*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 			}
@@ -81,23 +104,31 @@ public class Normal : Person {
 				if(this.y -	2 > 0){
 					if(board[this.x+2, this.y-2] != null && !(board[this.x+2, this.y-2] is EmptySpace)){
 						Person p = board[this.x+2, this.y-2].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+						}/*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 				
 				if(this.y + 2 < height){
 					if(board[this.x+2, this.y+2] != null && !(board[this.x+2, this.y+2] is EmptySpace)){
 						Person p = board[this.x+2, this.y+2].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+						} /*
 						if(!p.activated){
 							p.Activate();
-						}
+						}*/
 					}
 				}
 			}
 		
 		}
+
+		return toBeActivated;
 	}
 	
 }

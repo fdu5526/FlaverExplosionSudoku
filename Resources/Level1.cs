@@ -8,6 +8,8 @@ using System.Collections.Generic;
 public class Level1 : MonoBehaviour {
 
 	public Text percentageComplete;
+	private bool started;
+	List<Person> toBeActivated;
 
 	/**
 	 *
@@ -25,7 +27,7 @@ public class Level1 : MonoBehaviour {
 		{0, 0, 0, 0, 1},
 		{0, 0, 0, 1, 0},
 	};
-	int[] setupPlayerPieces = new int[1]{1};
+	public int[] setupPlayerPieces = new int[1]{1};
 
 	
 	public GameObject[,] gameObjectBoard;
@@ -38,9 +40,9 @@ public class Level1 : MonoBehaviour {
 	void SetupUI(){
 		Button quitButton = GameObject.Find ("Quit").GetComponent<Button>();
 		Button resetButton = GameObject.Find ("Clear").GetComponent<Button>();
-		Button startButton = GameObject.Find ("Activate").GetComponent<Button>();
+		//Button startButton = GameObject.Find ("Activate").GetComponent<Button>();
 
-		startButton.onClick.AddListener (activateRumor);
+		//startButton.onClick.AddListener (activateRumor);
 		quitButton.onClick.AddListener (endGame);
 		resetButton.onClick.AddListener (resetPieces);
 
@@ -65,7 +67,8 @@ public class Level1 : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-
+		SetupUI ();
+		started = false;
 		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
 
 		height = setupBoard.GetLength(0);
@@ -185,7 +188,17 @@ public class Level1 : MonoBehaviour {
 
 				if(gameObjectBoard[r,c] != null)
 				{
-					gameObjectBoard[r,c].GetComponent<Person>().Activate();
+
+					Person p = gameObjectBoard[r,c].GetComponent<Person>();
+					if(p != null){
+						started = true;
+						toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
+						foreach(Person per in toBeActivated){
+							print ("HI");
+						}
+					}else{
+						print ("Null person");
+					}
 				}
 			}
 		}
