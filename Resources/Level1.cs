@@ -147,6 +147,10 @@ public class Level1 : MonoBehaviour {
 		RaycastHit hit;
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
 		{
+			// calculate this piece's index
+			int r = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
+			int c = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
+
 			// hit empty space, place down player's piece
 			if(hit.collider.tag.Equals("emptySpace"))
 			{
@@ -155,10 +159,6 @@ public class Level1 : MonoBehaviour {
 					// get and remove player's piece
 					int currentPiece = playerPieces[currentPlayerPieceIndex];
 					playerPieces.RemoveAt(currentPlayerPieceIndex);
-
-					// calculate this piece's index
-					int r = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
-					int c = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
 
 					AddPieceToBoard(currentPiece, r, c);
 
@@ -169,12 +169,9 @@ public class Level1 : MonoBehaviour {
 			// activate piece
 			else
 			{
-				int r = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
-				int c = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
 
 				if(gameObjectBoard[r,c] != null)
 				{
-
 					Person p = gameObjectBoard[r,c].GetComponent<Person>();
 					if(p != null){
 						started = true;
@@ -183,7 +180,7 @@ public class Level1 : MonoBehaviour {
 							print ("HI");
 						}
 					}else{
-						print ("Null person");
+						print ("null person");
 					}
 				}
 			}
