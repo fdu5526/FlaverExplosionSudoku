@@ -29,6 +29,7 @@ public class Normal : Person {
 						Person p = board[this.x-1, this.y-1].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						}
 						/*
 						if(!p.activated){
@@ -41,6 +42,7 @@ public class Normal : Person {
 						Person p = board[this.x-1, this.y+1].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						}/*
 						if(!p.activated){
 							p.Activate();
@@ -54,6 +56,7 @@ public class Normal : Person {
 						Person p = board[this.x-2, this.y-2].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						}
 						/*
 						if(!p.activated){
@@ -67,6 +70,7 @@ public class Normal : Person {
 						Person p = board[this.x-2, this.y+2].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						}/*
 						if(!p.activated){
 							p.Activate();
@@ -80,6 +84,7 @@ public class Normal : Person {
 						Person p = board[this.x+1, this.y-1].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						}/*
 						if(!p.activated){
 							p.Activate();
@@ -93,6 +98,7 @@ public class Normal : Person {
 						// check for null
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						}/*
 						if(!p.activated){
 							p.Activate();
@@ -106,6 +112,7 @@ public class Normal : Person {
 						Person p = board[this.x+2, this.y-2].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						}/*
 						if(!p.activated){
 							p.Activate();
@@ -118,6 +125,7 @@ public class Normal : Person {
 						Person p = board[this.x+2, this.y+2].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
+							print (p.GetInstanceID());
 						} /*
 						if(!p.activated){
 							p.Activate();

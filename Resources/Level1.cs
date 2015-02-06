@@ -2,12 +2,14 @@
 using System.Collections;
 
 using UnityEngine.UI;
+using System.Linq;
 
 using System.Collections.Generic;
 
 public class Level1 : MonoBehaviour {
 
 	public Text percentageComplete;
+	int totalCount, partialCount = 0;
 	private bool started;
 	List<Person> toBeActivated;
 
@@ -86,6 +88,7 @@ public class Level1 : MonoBehaviour {
 			for(int r = 0; r < height; r++)
 			{
 				AddPieceToBoard(setupBoard[r,c], r, c);
+				totalCount++;
 			}
 		}
 
@@ -126,18 +129,11 @@ public class Level1 : MonoBehaviour {
 	{
 		// update percentage covered, done quickly
 		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
-		int total = persons.Length;
-		int covered = 0;
-		foreach (GameObject p in persons) {
-			if(p.GetComponent<Person>().activated){
-				covered++;
-			}
-		}
 
 		float percent = 0f;
 
-		if (total > 0) {
-			percent = (covered/total) * 100;
+		if (totalCount > 0) {
+			percent = (partialCount/totalCount) * 100;
 		} 
 
 		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
@@ -159,7 +155,7 @@ public class Level1 : MonoBehaviour {
 					// get and remove player's piece
 					int currentPiece = playerPieces[currentPlayerPieceIndex];
 					playerPieces.RemoveAt(currentPlayerPieceIndex);
-
+					totalCount++;
 					AddPieceToBoard(currentPiece, r, c);
 
 					Destroy(hit.collider);
@@ -170,15 +166,18 @@ public class Level1 : MonoBehaviour {
 			else
 			{
 
-				if(gameObjectBoard[r,c] != null)
+				if(gameObjectBoard[r,c] != null && !started)
 				{
 					Person p = gameObjectBoard[r,c].GetComponent<Person>();
 					if(p != null){
-						started = true;
+						//GameObject.FindGameObjectWithTag("normalButton").GetComponent<Text>().text = "Normal Person: 0";
 						toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
+						partialCount++;
+						// sanity check
 						foreach(Person per in toBeActivated){
 							print ("HI");
 						}
+						started = true;
 					}else{
 						print ("null person");
 					}
@@ -188,10 +187,34 @@ public class Level1 : MonoBehaviour {
 	}
 
 
+	void checkAndActivate(){
+		print ("Hello");
+		List<Person> accumulator = new List<Person> ();
+		foreach (Person p in toBeActivated) {
+			if(!p.activated){
+				print (p.GetInstanceID());
+				partialCount++;
+				accumulator.AddRange(p.Activate());
+			}
+
+		}
+		if (accumulator.Count == 0) {
+			// no more cascade, stop
+			// popup?
+			started = false;
+		} else {
+			toBeActivated = accumulator.Distinct().ToList();
+			// get rid of duplicates
+		}
+	}
+
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		CheckClick();
+		if (started) {
+			checkAndActivate();
+		}
 	}
 }
