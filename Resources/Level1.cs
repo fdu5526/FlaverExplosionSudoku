@@ -85,21 +85,7 @@ public class Level1 : MonoBehaviour {
 		{
 			for(int r = 0; r < height; r++)
 			{
-
-				if(setupBoard[r,c] == 1)	// normal person
-				{
-					GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Person"));
-					g.transform.position = new Vector3(gridWidth*r-(width/2*gridWidth), 
-																						 1f, gridWidth*c-(height/2*gridWidth));
-					// add position in matrix to person
-					g.GetComponent<Person>().setPosition(r,c);
-
-					gameObjectBoard[r,c] = g;
-				}
-
-
 				AddPieceToBoard(setupBoard[r,c], r, c);
-
 			}
 		}
 
