@@ -13,7 +13,8 @@ public class Normal : Person {
 	}
 
 	override public List<Person> Activate (){
-		
+			
+		gameObject.renderer.material.color = Color.red;
 		activated = true;
 		List<Person> toBeActivated = new List<Person> ();
 
