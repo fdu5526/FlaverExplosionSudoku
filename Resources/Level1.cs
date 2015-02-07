@@ -23,11 +23,13 @@ public class Level1 : MonoBehaviour {
 	 */
 	int[,] setupBoard = new int[,]
 	{
-		{0, 0, 1, 0, 0},
-		{0, 1, 0, 1, 0},
-		{0, 0, 1, 0, 0},
-		{0, 0, 0, 0, 1},
-		{0, 0, 0, 1, 0},
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 1, 0, 0, 0, 0},
+		{0, 1, 0, 1, 0, 0, 0},
+		{0, 0, 1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 1, 0, 0},
+		{0, 0, 0, 1, 0, 0, 0},
 	};
 	public int[] setupPlayerPieces = new int[1]{1};
 
@@ -55,7 +57,35 @@ public class Level1 : MonoBehaviour {
 	}
 
 	void resetPieces(){
-		//TODO
+
+		// delete all the old stuff
+		if(gameObjectBoard != null)
+		{
+			for(int c = 0; c < width; c++)
+			{
+				for(int r = 0; r < height; r++)
+				{
+					if(gameObjectBoard[r,c] != null)
+						Destroy(gameObjectBoard[r,c]);
+				}
+			}
+			gameObjectBoard = null;
+		}
+		playerPieces = null;
+
+		// make the board
+		gameObjectBoard = new GameObject[height, width];
+		playerPieces = new List<int>(setupPlayerPieces);
+
+		// place people there
+		for(int c = 0; c < width; c++)
+		{
+			for(int r = 0; r < height; r++)
+			{
+				AddPieceToBoard(setupBoard[r,c], r, c);
+				totalCount++;
+			}
+		}
 	}
 
 	void activateRumor(){
@@ -77,29 +107,13 @@ public class Level1 : MonoBehaviour {
 		width = setupBoard.GetLength(1);
 		gridWidth = 30f/(float)height;
 
-
-		gameObjectBoard = new GameObject[height, width];
-		playerPieces = new List<int>(setupPlayerPieces);
-
-		//this.transform.localScale = new Vector3(height*gridWidth, 1, width*gridWidth);
-
-		// place people there
-		for(int c = 0; c < width; c++)
-		{
-			for(int r = 0; r < height; r++)
-			{
-				AddPieceToBoard(setupBoard[r,c], r, c);
-				totalCount++;
-			}
-		}
-
+		resetPieces();
 	}
 
 
-
+	// add a single piece with ID i to gameObjectBoard[r,c]
 	void AddPieceToBoard(int i, int r, int c)
 	{
-
 
 		GameObject g = null;
 		if(i == 0)	// empty square
@@ -120,13 +134,13 @@ public class Level1 : MonoBehaviour {
 			g.GetComponent<Person>().setPosition(r,c);
 		}
 
-
+		// add the piece to the board
 		gameObjectBoard[r,c] = g;
 	}
 
 
 
-
+	// player clicked somewhere, figure out what to do
 	void CheckClick()
 	{
 		// update percentage covered, done quickly
