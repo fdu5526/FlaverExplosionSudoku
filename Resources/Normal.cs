@@ -24,117 +24,162 @@ public class Normal : Person {
 			int height = GameObject.Find ("GameMaster").GetComponent<Level1>().height;
 			int width = GameObject.Find ("GameMaster").GetComponent<Level1>().width;
 			// too tired to be clever about this
-			if(this.x - 1 > 0){
-				if(this.y -	1 > 0){
-					if(board[this.x-1, this.y-1] != null && !(board[this.x-1, this.y-1] is EmptySpace)){
-						Person p = board[this.x-1, this.y-1].GetComponent<Person>();
+				// diagonal NE (+, +)
+				int cx = this.x+1;
+				int cy = this.y+1;
+				while(cx < width && cy < height && cx < this.x + range + 1){
+					// hit a dad and break
+					if(board[cy,cx] != null){
+						if(board[cy,cx].GetComponent<Dad>() != null){
+							break;
+						}
+						Person p = board[cy, cx].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+					cx++;
+					cy++;
+				}
+				
+				// diagonal SE (-, +)
+				cx = this.x+1;
+				cy = this.y-1;
+				while(cx < width && cy > 0 && cx < this.x + range + 1){
+					if(board[cy, cx] != null){
+						if(board[cy, cx].GetComponent<Dad>() != null){
+							break;
+						}
+						Person p = board[cy, cx].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+					cx++;
+					cy--;
+				}
+				// diagonal SW (-, -)
+				cx = this.x-1;
+				cy = this.y-1;
+				while(cx > 0 && cy > 0 && cx > this.x - range - 1){
+					if(board[cy, cx] != null){
+						if(board[cy, cx].GetComponent<Dad>() != null){
+							break;
+						}
+						Person p = board[cy, cx].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+					cx--;
+					cy--;
+				}
+				// diagonal NW (+, -)
+				cx = this.x - 1;
+				cy = this.y +1;
+				while(cx > 0 && cy < height && cx > this.x - range - 1){
+					if(board[cy, cx] != null){
+						if(board[cy, cx].GetComponent<Dad>() != null){
+							break;
+						}
+						Person p = board[cy, cx].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+					cx--;
+					cy++;
+				}
+			
+
+			/*
+			if(this.y - 1 > 0){
+				if(this.x -	1 > 0){
+					if(board[this.y-1, this.x-1] != null && !(board[this.y-1, this.x-1] is EmptySpace)){
+						Person p = board[this.y-1, this.x-1].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
 							print (p.GetInstanceID());
 						}
-						/*
-						if(!p.activated){
-							p.Activate();
-						}*/
+
 					}
 				}
-				if(this.y + 1 < height){
-					if(board[this.x-1, this.y+1] != null && !(board[this.x-1, this.y+1] is EmptySpace)){
-						Person p = board[this.x-1, this.y+1].GetComponent<Person>();
-						if(p != null){
-							toBeActivated.Add(p);
-							print (p.GetInstanceID());
-						}/*
-						if(!p.activated){
-							p.Activate();
-						}*/
-					}
-				}
-			}
-			if(this.x - 2 > 0){
-				if(this.y -	2 > 0){
-					if(board[this.x-2, this.y-2] != null && !(board[this.x-2, this.y-2] is EmptySpace)){
-						Person p = board[this.x-2, this.y-2].GetComponent<Person>();
+				if(this.x + 1 < height){
+					if(board[this.y-1, this.x+1] != null && !(board[this.y-1, this.x+1] is EmptySpace)){
+						Person p = board[this.y-1, this.x+1].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
 							print (p.GetInstanceID());
 						}
-						/*
-						if(!p.activated){
-							p.Activate();
-						}*/
-					}
-				}
-				
-				if(this.y + 2 < height){
-					if(board[this.x-2, this.y+2] != null && !(board[this.x-2, this.y+2] is EmptySpace)){
-						Person p = board[this.x-2, this.y+2].GetComponent<Person>();
-						if(p != null){
-							toBeActivated.Add(p);
-							print (p.GetInstanceID());
-						}/*
-						if(!p.activated){
-							p.Activate();
-						}*/
 					}
 				}
 			}
-			if(this.x + 1 < width){
-				if(this.y -	1 > 0){
-					if(board[this.x+1, this.y-1] != null && !(board[this.x+1, this.y-1] is EmptySpace)){
-						Person p = board[this.x+1, this.y-1].GetComponent<Person>();
+			if(this.y - 2 > 0){
+				if(this.x -	2 > 0){
+					if(board[this.y-2, this.x-2] != null && !(board[this.y-2, this.x-2] is EmptySpace)){
+						Person p = board[this.y-2, this.x-2].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
 							print (p.GetInstanceID());
-						}/*
-						if(!p.activated){
-							p.Activate();
-						}*/
+						}
+						
 					}
 				}
 				
-				if(this.y + 1 < height){
-					if(board[this.x+1, this.y+1] != null && !(board[this.x+1, this.y+1] is EmptySpace)){
-						Person p = board[this.x+1, this.y+1].GetComponent<Person>();
+				if(this.x + 2 < height){
+					if(board[this.y-2, this.x+2] != null && !(board[this.y-2, this.x+2] is EmptySpace)){
+						Person p = board[this.y-2, this.x+2].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+							print (p.GetInstanceID());
+						}
+					}
+				}
+			}
+			if(this.y + 1 < width){
+				if(this.x -	1 > 0){
+					if(board[this.y+1, this.x-1] != null && !(board[this.y+1, this.x-1] is EmptySpace)){
+						Person p = board[this.y+1, this.x-1].GetComponent<Person>();
+						if(p != null){
+							toBeActivated.Add(p);
+							print (p.GetInstanceID());
+						}
+					}
+				}
+				
+				if(this.x + 1 < height){
+					if(board[this.y+1, this.x+1] != null && !(board[this.y+1, this.x+1] is EmptySpace)){
+						Person p = board[this.y+1, this.x+1].GetComponent<Person>();
 						// check for null
 						if(p != null){
 							toBeActivated.Add(p);
 							print (p.GetInstanceID());
-						}/*
-						if(!p.activated){
-							p.Activate();
-						}*/
+						}
 					}
 				}
 			}
-			if(this.x + 2 < width){
-				if(this.y -	2 > 0){
-					if(board[this.x+2, this.y-2] != null && !(board[this.x+2, this.y-2] is EmptySpace)){
-						Person p = board[this.x+2, this.y-2].GetComponent<Person>();
+			if(this.y + 2 < width){
+				if(this.x -	2 > 0){
+					if(board[this.y+2, this.x-2] != null && !(board[this.y+2, this.x-2] is EmptySpace)){
+						Person p = board[this.y+2, this.x-2].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
 							print (p.GetInstanceID());
-						}/*
-						if(!p.activated){
-							p.Activate();
-						}*/
+						}
 					}
 				}
 				
-				if(this.y + 2 < height){
-					if(board[this.x+2, this.y+2] != null && !(board[this.x+2, this.y+2] is EmptySpace)){
-						Person p = board[this.x+2, this.y+2].GetComponent<Person>();
+				if(this.x + 2 < height){
+					if(board[this.y+2, this.x+2] != null && !(board[this.y+2, this.x+2] is EmptySpace)){
+						Person p = board[this.y+2, this.x+2].GetComponent<Person>();
 						if(p != null){
 							toBeActivated.Add(p);
 							print (p.GetInstanceID());
-						} /*
-						if(!p.activated){
-							p.Activate();
-						}*/
+						}
 					}
 				}
 			}
-		
+			*/
 		}
 
 		return toBeActivated;
