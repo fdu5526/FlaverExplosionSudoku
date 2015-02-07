@@ -13,15 +13,15 @@ public class Level1 : MonoBehaviour {
 	private bool started;
 	List<Person> toBeActivated;
 
-	/**
-	 *
-	 -1: dead space, cannot place anything
+	/*
 	 	0: empty square
 	 	1: normal person
 	 	2: blogger
 	 	3: grandma
+	 	4: best friend
+	 	5: dad
 	 */
-	int[,] setupBoard = new int[,]
+	static int[,] setupBoard = new int[,]
 	{
 		{0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0},
@@ -31,8 +31,7 @@ public class Level1 : MonoBehaviour {
 		{0, 0, 0, 0, 1, 0, 0},
 		{0, 0, 0, 1, 0, 0, 0},
 	};
-	public int[] setupPlayerPieces = new int[1]{1};
-
+	static public int[] setupPlayerPieces = new int[]{2};
 	
 	public GameObject[,] gameObjectBoard;
 	List<int> playerPieces;
@@ -98,7 +97,8 @@ public class Level1 : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () 
-	{
+	{	
+
 		SetupUI ();
 		started = false;
 		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
@@ -116,25 +116,47 @@ public class Level1 : MonoBehaviour {
 	{
 
 		GameObject g = null;
-		if(i == 0)	// empty square
-		{
 
-			g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/EmptySpace"));
-			g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																				 0.05f, gridWidth*c-(width/2*gridWidth));
-			g.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
-			g.GetComponent<Person>().setPosition(r,c);
-			
-		}
-		else if(i == 1)	// normal person
+		switch (i)
 		{
-			g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Person"));
-			g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																				 1f, gridWidth*c-(width/2*gridWidth));
-			g.GetComponent<Person>().setPosition(r,c);
+			case 0:	// empty square
+				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/EmptySpace"));
+				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																					 0.05f, gridWidth*c-(width/2*gridWidth));
+				g.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
+				break;
+			case 1:	// normal person
+				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/NormalPerson"));
+				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																					 1f, gridWidth*c-(width/2*gridWidth));
+				break;
+			case 2:
+				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/BloggerPerson"));
+				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																					 1f, gridWidth*c-(width/2*gridWidth));
+				break;
+			case 3:
+				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/GrandmaPerson"));
+				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																					 1f, gridWidth*c-(width/2*gridWidth));
+				break;
+			case 4:
+				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/BestFriendPerson"));
+				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																					 1f, gridWidth*c-(width/2*gridWidth));
+				break;
+			case 5:
+				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/DadPerson"));
+				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																					 1f, gridWidth*c-(width/2*gridWidth));
+				break;
+			default:
+				break;
 		}
 
 		// add the piece to the board
+		if(g != null)
+			g.GetComponent<Person>().setPosition(r,c);
 		gameObjectBoard[r,c] = g;
 	}
 
@@ -168,10 +190,13 @@ public class Level1 : MonoBehaviour {
 			{
 				if(playerPieces.Count != 0)
 				{
+
 					// get and remove player's piece
 					int currentPiece = playerPieces[currentPlayerPieceIndex];
 					playerPieces.RemoveAt(currentPlayerPieceIndex);
 					totalCount++;
+
+
 					AddPieceToBoard(currentPiece, r, c);
 
 					Destroy(hit.collider);

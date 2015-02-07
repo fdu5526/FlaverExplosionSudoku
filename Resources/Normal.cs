@@ -9,7 +9,7 @@ public class Normal : Person {
 	// Use this for initialization
 	void Start () {
 		activated = false;
-		range = 2;
+		range = 1;
 	}
 
 	override public List<Person> Activate (){
