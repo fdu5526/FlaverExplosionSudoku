@@ -23,9 +23,9 @@ public class Level1 : MonoBehaviour {
 	 */
 	int[,] setupBoard = new int[,]
 	{
-		{0, 0, 0, 0, 0},
 		{0, 0, 1, 0, 0},
-		{0, 1, 0, 0, 0},
+		{0, 1, 0, 1, 0},
+		{0, 0, 1, 0, 0},
 		{0, 0, 0, 0, 1},
 		{0, 0, 0, 1, 0},
 	};
@@ -77,6 +77,7 @@ public class Level1 : MonoBehaviour {
 		width = setupBoard.GetLength(1);
 		gridWidth = 30f/(float)height;
 
+
 		gameObjectBoard = new GameObject[height, width];
 		playerPieces = new List<int>(setupPlayerPieces);
 
@@ -101,20 +102,21 @@ public class Level1 : MonoBehaviour {
 
 
 		GameObject g = null;
-		if(i == 0)	// normal person
+		if(i == 0)	// empty square
 		{
 
 			g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/EmptySpace"));
-			g.transform.position = new Vector3(gridWidth*c-(height/2*gridWidth), 
-																				 0.05f, gridWidth*r-(width/2*gridWidth));
+			g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																				 0.05f, gridWidth*c-(width/2*gridWidth));
 			g.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
+			g.GetComponent<Person>().setPosition(r,c);
 			
 		}
 		else if(i == 1)	// normal person
 		{
 			g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Person"));
-			g.transform.position = new Vector3(gridWidth*c-(height/2*gridWidth), 
-																				 1f, gridWidth*r-(width/2*gridWidth));
+			g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																				 1f, gridWidth*c-(width/2*gridWidth));
 			g.GetComponent<Person>().setPosition(r,c);
 		}
 
@@ -133,7 +135,7 @@ public class Level1 : MonoBehaviour {
 		float percent = 0f;
 
 		if (totalCount > 0) {
-			percent = (partialCount/totalCount) * 100;
+			percent = ((float)partialCount/(float)totalCount) * 100f;
 		} 
 
 		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
@@ -144,8 +146,8 @@ public class Level1 : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
 		{
 			// calculate this piece's index
-			int r = (int)((hit.transform.position.z+(width/2*gridWidth))/gridWidth);
-			int c = (int)((hit.transform.position.x+(height/2*gridWidth))/gridWidth);
+			int r = hit.transform.gameObject.GetComponent<Person>().y;
+			int c = hit.transform.gameObject.GetComponent<Person>().x;
 
 			// hit empty space, place down player's piece
 			if(hit.collider.tag.Equals("emptySpace"))

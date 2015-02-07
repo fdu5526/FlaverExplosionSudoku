@@ -9,8 +9,8 @@ public abstract class Person : MonoBehaviour {
 	public bool activated;
 
 	public void setPosition(int r, int c){
-		this.x = r;
-		this.y = c;
+		this.x = c;
+		this.y = r;
 	}
 
 	public abstract List<Person> Activate ();

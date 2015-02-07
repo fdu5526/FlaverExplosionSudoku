@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class EmptySpace : MonoBehaviour {
+public class EmptySpace : Person {
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +21,10 @@ public class EmptySpace : MonoBehaviour {
  	void OnMouseExit()
  	{
    	gameObject.renderer.material.color = Color.white;
+ 	}
+
+ 	override public List<Person> Activate (){
+ 		return new List<Person>();
  	}
 
 }
