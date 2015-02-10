@@ -13,6 +13,9 @@ public class Level1 : MonoBehaviour {
 	private bool started;
 	List<Person> toBeActivated;
 
+	public Dictionary <string, int> namesToType = new Dictionary<string, int>();
+	public DropDown dropDownMenu;
+
 	/*
 	 	0: empty square
 	 	1: normal person
@@ -31,7 +34,7 @@ public class Level1 : MonoBehaviour {
 		{0, 0, 0, 0, 1, 0, 0},
 		{0, 0, 0, 1, 0, 0, 0},
 	};
-	static public int[] setupPlayerPieces = new int[]{2};
+	static public int[] setupPlayerPieces = new int[]{2, 3};
 	
 	public GameObject[,] gameObjectBoard;
 	List<int> playerPieces;
@@ -48,6 +51,11 @@ public class Level1 : MonoBehaviour {
 		//startButton.onClick.AddListener (activateRumor);
 		quitButton.onClick.AddListener (endGame);
 		resetButton.onClick.AddListener (resetPieces);
+
+		dropDownMenu.options = new string[] {"Blogger", "Grandma"};
+		dropDownMenu.inventory.Add("Blogger", 1);
+		dropDownMenu.inventory.Add ("Grandma", 1);
+		dropDownMenu.initialized = true;
 
 	}
 
@@ -71,7 +79,9 @@ public class Level1 : MonoBehaviour {
 			gameObjectBoard = null;
 		}
 		playerPieces = null;
-
+		dropDownMenu.inventory["Blogger"] = 1;
+		dropDownMenu.inventory ["Grandma"] = 1;
+		dropDownMenu.resetButtons ();
 		// make the board
 		gameObjectBoard = new GameObject[height, width];
 		playerPieces = new List<int>(setupPlayerPieces);
@@ -106,6 +116,13 @@ public class Level1 : MonoBehaviour {
 		height = setupBoard.GetLength(0);
 		width = setupBoard.GetLength(1);
 		gridWidth = 30f/(float)height;
+
+		namesToType.Add ("EmptySpace", 0);
+		namesToType.Add ("Normal", 1);
+		namesToType.Add ("Blogger", 2);
+		namesToType.Add ("Grandma", 3);
+		namesToType.Add ("Best Friend", 4);
+		namesToType.Add ("Dad", 5);
 
 		resetPieces();
 	}
@@ -188,7 +205,13 @@ public class Level1 : MonoBehaviour {
 			// hit empty space, place down player's piece
 			if(hit.collider.tag.Equals("emptySpace"))
 			{
-				if(playerPieces.Count != 0)
+				// from the current selection determine the current type of piece to place
+				// and if you have more than 0 of it to place
+				currentPlayerPieceIndex = playerPieces.IndexOf(dropDownMenu.selection);
+				print (dropDownMenu.selection);
+				print (currentPlayerPieceIndex);
+
+				if(playerPieces.Count != 0 && currentPlayerPieceIndex != -1)
 				{
 
 					// get and remove player's piece
@@ -196,12 +219,15 @@ public class Level1 : MonoBehaviour {
 					playerPieces.RemoveAt(currentPlayerPieceIndex);
 					totalCount++;
 
+					// change text on buttons
+					dropDownMenu.buttonCount();
 
 					AddPieceToBoard(currentPiece, r, c);
 
 					Destroy(hit.collider);
 					Destroy(hit.transform.gameObject);
 				}
+
 			}
 			// activate piece
 			else
@@ -216,11 +242,11 @@ public class Level1 : MonoBehaviour {
 						partialCount++;
 						// sanity check
 						foreach(Person per in toBeActivated){
-							print ("HI");
+						//	print ("HI");
 						}
 						started = true;
 					}else{
-						print ("null person");
+						//print ("null person");
 					}
 				}
 			}
@@ -229,11 +255,11 @@ public class Level1 : MonoBehaviour {
 
 
 	void checkAndActivate(){
-		print ("Hello");
+		//print ("Hello");
 		List<Person> accumulator = new List<Person> ();
 		foreach (Person p in toBeActivated) {
 			if(!p.activated){
-				print (p.GetInstanceID());
+				//print (p.GetInstanceID());
 				partialCount++;
 				accumulator.AddRange(p.Activate());
 			}

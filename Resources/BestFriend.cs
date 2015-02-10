@@ -28,7 +28,7 @@ public class BestFriend : Person {
 		// the surrounding squares diagonally
 		// i may have gotten this incorrect but the thing is that best friends infect each other until the last in the chain,
 		// which infects like a normal person
-		if (bestFriend.activated) {
+		if (bestFriend != null && bestFriend.activated) {
 			if(this.x != null && this.y != null){
 				// diagonal NE (+, +)
 				int cx = this.x+1;
@@ -98,9 +98,27 @@ public class BestFriend : Person {
 				}
 			}
 		} else {
-			toBeActivated.Add(bestFriend);
+			if(bestFriend != null){
+				toBeActivated.Add(bestFriend);
+			}
 		}
 
 		return toBeActivated;
+	}
+
+	void Update(){
+		if (bestFriend == null) {
+			// search for other bestfriend
+			GameObject[] objects = GameObject.FindGameObjectsWithTag("person");
+			foreach (GameObject o in objects)
+			{
+				BestFriend b = o.GetComponent<BestFriend>();
+				if(b != null && b != this){
+					this.SetFriend(b);
+					b.SetFriend(this);
+				}
+
+			}
+		}
 	}
 }
