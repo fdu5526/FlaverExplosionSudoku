@@ -39,7 +39,7 @@ public class Blogger : Person {
 			}
 			// up, different y, same x
 			ct = this.y - 1;
-			while(ct > 0 && ct > this.y - range - 1){
+			while(ct >= 0 && ct > this.y - range - 1){
 				if(board[ct, this.x] != null){
 					if(board[ct, this.x].GetComponent<Dad>() != null){
 						break;
@@ -67,7 +67,7 @@ public class Blogger : Person {
 			}
 			// left, same y, different x
 			ct = this.x - 1;
-			while(ct > 0 && ct > this.x - range - 1){
+			while(ct >= 0 && ct > this.x - range - 1){
 				if(board[this.y, ct] != null){
 					if(board[this.y, ct].GetComponent<Dad>() != null){
 						break;

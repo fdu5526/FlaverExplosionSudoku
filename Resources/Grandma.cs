@@ -30,7 +30,7 @@ public class Grandma : Person {
 					}
 				}
 			}
-			if(this.y - range > 0){
+			if(this.y - range >= 0){
 				if(board[this.y-range, this.x] != null){
 					Person p = board[this.y-range, this.x].GetComponent<Person>();
 					if(!(p is EmptySpace)){
@@ -46,7 +46,7 @@ public class Grandma : Person {
 					}
 				}
 			}
-			if(this.x - range > 0){
+			if(this.x - range >= 0){
 				if(board[this.y, this.x-range] != null){
 					Person p = board[this.y, this.x-range].GetComponent<Person>();
 					if(!(p is EmptySpace)){

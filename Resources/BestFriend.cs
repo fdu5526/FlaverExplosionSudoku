@@ -51,7 +51,7 @@ public class BestFriend : Person {
 				// diagonal SE (-, +)
 				cx = this.x+1;
 				cy = this.y-1;
-				while(cx < width && cy > 0 && cx < this.x + range + 1){
+				while(cx < width && cy >= 0 && cx < this.x + range + 1){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -67,7 +67,7 @@ public class BestFriend : Person {
 				// diagonal SW (-, -)
 				cx = this.x-1;
 				cy = this.y-1;
-				while(cx > 0 && cy > 0 && cx > this.x - range - 1){
+				while(cx >= 0 && cy >= 0 && cx > this.x - range - 1){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -83,7 +83,7 @@ public class BestFriend : Person {
 				// diagonal NW (+, -)
 				cx = this.x - 1;
 				cy = this.y +1;
-				while(cx > 0 && cy < height && cx > this.x - range - 1){
+				while(cx >= 0 && cy < height && cx > this.x - range - 1){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
