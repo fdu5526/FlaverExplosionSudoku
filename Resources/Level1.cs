@@ -344,16 +344,13 @@ public class Level1 : MonoBehaviour {
 				if(gameObjectBoard[r,c] != null && !started)
 				{
 					Person p = gameObjectBoard[r,c].GetComponent<Person>();
+					gridBoard[r,c].GetComponent<Person>().Activate();
+
 					if(p != null){
 						//GameObject.FindGameObjectWithTag("normalButton").GetComponent<Text>().text = "Normal Person: 0";
 						toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
 						partialCount++;
-						// sanity check
-						foreach(Person per in toBeActivated){
-							int rg = p.GetComponent<Person>().y;
-							int cg = p.GetComponent<Person>().x;
-							gridBoard[rg,cg].GetComponent<Person>().Activate();
-						}
+
 						startTime = Time.time;
 						started = true;
 						audios[3].Play();
