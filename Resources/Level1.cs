@@ -306,6 +306,8 @@ public class Level1 : MonoBehaviour {
 
 					Destroy(hit.collider);
 					Destroy(hit.transform.gameObject);
+
+					audios[2].Play();
 				}
 
 			}
@@ -326,6 +328,8 @@ public class Level1 : MonoBehaviour {
 						}
 						startTime = Time.time;
 						started = true;
+						audios[3].Play();
+						
 					}else{
 						//print ("null person");
 					}
@@ -365,6 +369,8 @@ public class Level1 : MonoBehaviour {
 		float curTime = Time.time;
 		if (started && curTime >= startTime+maxSec) {
 			CheckAndActivate();
+			if(started)
+				audios[3].Play();
 		}
 	}
 }
