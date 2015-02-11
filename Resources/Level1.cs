@@ -160,7 +160,7 @@ public class Level1 : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{	
-		LoadLevelFromTextFile("Assets/Resources/Levels/Level1.txt");
+		LoadLevelFromTextFile("Assets/Resources/Levels/Level.txt");
 		SetupUI ();
 
 		namesToType.Add ("EmptySpace", 0);
