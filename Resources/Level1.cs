@@ -12,6 +12,8 @@ public class Level1 : MonoBehaviour {
 	int totalCount, partialCount = 0;
 	private bool started;
 	List<Person> toBeActivated;
+	float startTime;
+	float maxSec = 0.5f;
 
 	public Dictionary <string, int> namesToType = new Dictionary<string, int>();
 	public DropDown dropDownMenu;
@@ -177,7 +179,18 @@ public class Level1 : MonoBehaviour {
 		gameObjectBoard[r,c] = g;
 	}
 
-
+	void CalculatePercentage(){
+		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
+		int c = 0;
+		int total = persons.Length;
+		foreach (GameObject p in persons) {
+			if(p.GetComponent<Person>().activated){
+				c++;
+			}
+		}
+		float percent = ((float)c / (float)total) * 100f;
+		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
+	}
 
 	// player clicked somewhere, figure out what to do
 	void CheckClick()
@@ -185,14 +198,14 @@ public class Level1 : MonoBehaviour {
 		// update percentage covered, done quickly
 		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
 
-		float percent = 0f;
+		/*float percent = 0f;
 
 		if (totalCount > 0) {
 			percent = ((float)partialCount/(float)totalCount) * 100f;
 		} 
 
-		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
-
+		percentageComplete.text = "Percent Covered: " + (int)percent + "%";*/
+		CalculatePercentage ();
 
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
@@ -244,6 +257,7 @@ public class Level1 : MonoBehaviour {
 						foreach(Person per in toBeActivated){
 						//	print ("HI");
 						}
+						startTime = Time.time;
 						started = true;
 					}else{
 						//print ("null person");
@@ -273,6 +287,7 @@ public class Level1 : MonoBehaviour {
 			toBeActivated = accumulator.Distinct().ToList();
 			// get rid of duplicates
 		}
+		startTime = Time.time;
 	}
 
 	
@@ -280,7 +295,8 @@ public class Level1 : MonoBehaviour {
 	void Update () 
 	{
 		CheckClick();
-		if (started) {
+		float curTime = Time.time;
+		if (started && curTime >= startTime+maxSec) {
 			checkAndActivate();
 		}
 	}

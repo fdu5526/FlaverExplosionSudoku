@@ -11,6 +11,7 @@ public class DropDown : MonoBehaviour {
 	public Dictionary <string, int> inventory = new Dictionary<string, int>(); // set inventory first
 	public Dictionary <GameObject, string> buttonsToName = new Dictionary<GameObject, string>();
 	public Dictionary <string, GameObject> nameToButtons = new Dictionary<string, GameObject> ();
+	public Dictionary<string, Text> nameToText = new Dictionary<string, Text>();
 	public string[] options;
 	public bool initialized = false;
 
@@ -49,6 +50,8 @@ public class DropDown : MonoBehaviour {
 	void createButtons(){
 		for(int i = 0; i < options.Length; i++){
 			GameObject button = (GameObject) Instantiate(buttonPrefab);
+			Text t = button.GetComponentInChildren<Text>();
+			nameToText.Add(options[i], t);
 			int num = inventory[options[i]];
 			button.GetComponentInChildren<Text>().text = options[i] + ": " + num;
 			int index = namesToType[options[i]];
@@ -71,10 +74,10 @@ public class DropDown : MonoBehaviour {
 		// reset text on buttons
 		for (int i = 0; i < options.Length; i++) {
 			if(nameToButtons.ContainsKey(options[i])){
-				GameObject button = nameToButtons[options[i]];
+				Text button = nameToText[options[i]];
 				if(button != null){
 					int num = inventory[options[i]];
-					button.GetComponentInChildren<Text>().text = options[i] + ": " + num;
+					button.text = options[i] + ": " + num;
 				}
 			}
 		}
@@ -85,9 +88,9 @@ public class DropDown : MonoBehaviour {
 		if (selection != -1) {
 			string name = typeToNames [selection];
 			inventory[name]--;	// check this
-			GameObject button = nameToButtons[name];
+			Text button = nameToText[name];
 			int num = inventory[name];
-			//button.GetComponentInChildren<Text>().text = name + ": " + num;
+			button.text = name + ": " + num;
 			//print (button.GetComponentInChildren<Text>() != null);
 			//print (name);
 			//if(button != null){
