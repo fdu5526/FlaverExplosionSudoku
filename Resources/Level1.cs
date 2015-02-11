@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 
 using System.Collections.Generic;
+using System.IO;
 
 public class Level1 : MonoBehaviour {
 
@@ -35,6 +36,8 @@ public class Level1 : MonoBehaviour {
 		{0, 0, 0, 1, 0, 0, 0},
 	};
 	static public int[] setupPlayerPieces = new int[]{2, 3};
+
+
 	
 	public GameObject[,] gameObjectBoard;
 	List<int> playerPieces;
@@ -63,7 +66,45 @@ public class Level1 : MonoBehaviour {
 		Application.Quit ();
 	}
 
+
+	void LoadLevelFromTextFile(string filename)
+	{
+		
+		 StreamReader stream = new StreamReader(filename);
+
+	   while(!stream.EndOfStream)
+	   {
+	       string line = stream.ReadLine( );
+	       print(line + "\n");
+	       // Do Something with the input. 
+	   }
+	   stream.Close( );  
+	   
+
+
+   	setupBoard = new int[,]
+		{
+			{0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 1, 0, 0, 0, 0},
+			{0, 1, 0, 1, 0, 0, 0},
+			{0, 0, 1, 0, 0, 0, 0},
+			{0, 0, 0, 0, 1, 0, 0},
+			{0, 0, 0, 1, 0, 0, 0},
+		};
+		setupPlayerPieces = new int[]{2, 3};
+
+   	
+	}
+
 	void resetPieces(){
+
+		started = false;
+		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
+
+		height = setupBoard.GetLength(0);
+		width = setupBoard.GetLength(1);
+		gridWidth = 30f/(float)height;
 
 		// delete all the old stuff
 		if(gameObjectBoard != null)
@@ -81,8 +122,11 @@ public class Level1 : MonoBehaviour {
 		playerPieces = null;
 		dropDownMenu.inventory["Blogger"] = 1;
 		dropDownMenu.inventory ["Grandma"] = 1;
-		dropDownMenu.resetButtons ();
+		
+
+		//dropDownMenu.resetButtons ();
 		// make the board
+		
 		gameObjectBoard = new GameObject[height, width];
 		playerPieces = new List<int>(setupPlayerPieces);
 
@@ -108,14 +152,8 @@ public class Level1 : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{	
-
+		LoadLevelFromTextFile("Assets/Resources/Levels/Level1.txt");
 		SetupUI ();
-		started = false;
-		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
-
-		height = setupBoard.GetLength(0);
-		width = setupBoard.GetLength(1);
-		gridWidth = 30f/(float)height;
 
 		namesToType.Add ("EmptySpace", 0);
 		namesToType.Add ("Normal", 1);
