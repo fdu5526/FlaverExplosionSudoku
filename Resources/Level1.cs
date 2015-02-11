@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Linq;
 
 using System.Collections.Generic;
+using System.IO;
 
 public class Level1 : MonoBehaviour {
 
@@ -26,17 +27,10 @@ public class Level1 : MonoBehaviour {
 	 	4: best friend
 	 	5: dad
 	 */
-	static int[,] setupBoard = new int[,]
-	{
-		{0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 1, 0, 0, 0, 0},
-		{0, 1, 0, 1, 0, 0, 0},
-		{0, 0, 1, 0, 0, 0, 0},
-		{0, 0, 0, 0, 1, 0, 0},
-		{0, 0, 0, 1, 0, 0, 0},
-	};
-	static public int[] setupPlayerPieces = new int[]{2, 3};
+	// these are for serialization and resetting the board
+	List<List<int>> setupBoard;
+	List<int> setupPlayerPieces;
+
 	
 	public GameObject[,] gameObjectBoard;
 	List<int> playerPieces;
@@ -65,14 +59,74 @@ public class Level1 : MonoBehaviour {
 		Application.Quit ();
 	}
 
+
+	void LoadLevelNumber(int l)
+	{
+		string filename = "Assets/Resources/Levels/Level" + l.ToString() + ".txt";
+		StreamReader stream = new StreamReader(filename);
+		bool isFirst = true;
+
+		setupBoard = new List<List<int>>();
+		setupPlayerPieces = new List<int>();
+
+		// read my text file
+	  while(!stream.EndOfStream)
+	  {
+			string line = stream.ReadLine( );
+
+			// get placable pieces
+   		if(isFirst)
+   		{
+   			// add placable pieces
+   			for(int i = 0; i < line.Length; i++)
+   			{
+   				if(line[i] == ' ')
+   					continue;
+   				setupPlayerPieces.Add((int)(line[i] - '0'));
+   			}
+   			
+
+   			isFirst = false;
+   		}
+   		// get the board
+   		else
+   		{
+   			// add board
+   			List<int> row = new List<int>();
+   			// add placable pieces
+   			for(int i = 0; i < line.Length; i++)
+   			{
+   				if(line[i] == ' ')
+   					continue;
+   				row.Add((int)(line[i] - '0'));
+   			}
+
+   			setupBoard.Add(row);
+   		}
+	   }
+	   stream.Close( );
+
+	   // after reading in data, generate the board
+	   resetPieces();
+   	
+	}
+
 	void resetPieces(){
+
+		started = false;
+		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
+
+		// recalculate the width and height
+		height = setupBoard.Count;
+		width = setupBoard[0].Count;
+		gridWidth = 30f/(float)height;
 
 		// delete all the old stuff
 		if(gameObjectBoard != null)
 		{
-			for(int c = 0; c < width; c++)
+			for(int c = 0; c < gameObjectBoard.GetLength(1); c++)
 			{
-				for(int r = 0; r < height; r++)
+				for(int r = 0; r < gameObjectBoard.GetLength(0); r++)
 				{
 					if(gameObjectBoard[r,c] != null)
 						Destroy(gameObjectBoard[r,c]);
@@ -81,10 +135,13 @@ public class Level1 : MonoBehaviour {
 			gameObjectBoard = null;
 		}
 		playerPieces = null;
+
+		//TODO
 		dropDownMenu.inventory["Blogger"] = 1;
 		dropDownMenu.inventory ["Grandma"] = 1;
-		dropDownMenu.resetButtons ();
-		// make the board
+		//dropDownMenu.resetButtons ();
+		
+		// make the board		
 		gameObjectBoard = new GameObject[height, width];
 		playerPieces = new List<int>(setupPlayerPieces);
 
@@ -93,7 +150,7 @@ public class Level1 : MonoBehaviour {
 		{
 			for(int r = 0; r < height; r++)
 			{
-				AddPieceToBoard(setupBoard[r,c], r, c);
+				AddPieceToBoard(setupBoard[r][c], r, c);
 				totalCount++;
 			}
 		}
@@ -110,14 +167,7 @@ public class Level1 : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{	
-
 		SetupUI ();
-		started = false;
-		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
-
-		height = setupBoard.GetLength(0);
-		width = setupBoard.GetLength(1);
-		gridWidth = 30f/(float)height;
 
 		namesToType.Add ("EmptySpace", 0);
 		namesToType.Add ("Normal", 1);
@@ -126,7 +176,7 @@ public class Level1 : MonoBehaviour {
 		namesToType.Add ("Best Friend", 4);
 		namesToType.Add ("Dad", 5);
 
-		resetPieces();
+		LoadLevelNumber(6);
 	}
 
 
