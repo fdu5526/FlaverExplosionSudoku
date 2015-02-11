@@ -33,6 +33,7 @@ public class Level1 : MonoBehaviour {
 
 	
 	public GameObject[,] gameObjectBoard;
+	public GameObject[,] gridBoard;
 	List<int> playerPieces;
 	int currentPlayerPieceIndex = 0;
 
@@ -157,9 +158,12 @@ public class Level1 : MonoBehaviour {
 				{
 					if(gameObjectBoard[r,c] != null)
 						Destroy(gameObjectBoard[r,c]);
+					if(gridBoard[r,c] != null)
+						Destroy(gridBoard[r,c]);
 				}
 			}
 			gameObjectBoard = null;
+			gridBoard = null;
 		}
 		playerPieces = null;
 
@@ -170,6 +174,7 @@ public class Level1 : MonoBehaviour {
 		
 		// make the board		
 		gameObjectBoard = new GameObject[height, width];
+		gridBoard = new GameObject[height, width];
 		playerPieces = new List<int>(setupPlayerPieces);
 
 		// place people there
@@ -180,6 +185,7 @@ public class Level1 : MonoBehaviour {
 				AddPieceToBoard(setupBoard[r][c], r, c);
 				totalCount++;
 			}
+
 		}
 	}
 
@@ -210,6 +216,7 @@ public class Level1 : MonoBehaviour {
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
 																					 0.05f, gridWidth*c-(width/2*gridWidth));
 				g.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
+				g.GetComponent<EmptySpace>().isActuallyEmpty = true;
 				break;
 			case 1:	// normal person
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/NormalPerson"));
@@ -242,8 +249,23 @@ public class Level1 : MonoBehaviour {
 
 		// add the piece to the board
 		if(g != null)
+		{
 			g.GetComponent<Person>().setPosition(r,c);
-		gameObjectBoard[r,c] = g;
+			gameObjectBoard[r,c] = g;
+			
+			// if this is not an empty space, place one under it
+			if(i != 0)
+			{
+				GameObject b = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/EmptySpace"));
+				b.GetComponent<Person>().setPosition(r,c);
+				b.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
+																							 0.05f, gridWidth*c-(width/2*gridWidth));
+				b.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
+				b.GetComponent<EmptySpace>().isActuallyEmpty = false;
+				gridBoard[r,c] = b;
+			}
+		}
+
 	}
 
 	void CalculatePercentage(){
@@ -285,6 +307,10 @@ public class Level1 : MonoBehaviour {
 			// hit empty space, place down player's piece
 			if(hit.collider.tag.Equals("emptySpace"))
 			{
+				// not an actual empty space
+				if(gridBoard[r,c] != null)
+					return;
+
 				// from the current selection determine the current type of piece to place
 				// and if you have more than 0 of it to place
 				currentPlayerPieceIndex = playerPieces.IndexOf(dropDownMenu.selection);
@@ -324,12 +350,14 @@ public class Level1 : MonoBehaviour {
 						partialCount++;
 						// sanity check
 						foreach(Person per in toBeActivated){
-						//	print ("HI");
+							int rg = p.GetComponent<Person>().y;
+							int cg = p.GetComponent<Person>().x;
+							gridBoard[rg,cg].GetComponent<Person>().Activate();
 						}
 						startTime = Time.time;
 						started = true;
 						audios[3].Play();
-						
+
 					}else{
 						//print ("null person");
 					}
@@ -347,6 +375,9 @@ public class Level1 : MonoBehaviour {
 				//print (p.GetInstanceID());
 				partialCount++;
 				accumulator.AddRange(p.Activate());
+				int rg = p.GetComponent<Person>().y;
+				int cg = p.GetComponent<Person>().x;
+				gridBoard[rg,cg].GetComponent<Person>().Activate();
 			}
 
 		}
