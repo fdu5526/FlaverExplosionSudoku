@@ -39,14 +39,38 @@ public class Level1 : MonoBehaviour {
 	public int height, width;
 	float gridWidth;
 
-	void SetupUI(){
+	AudioSource[] audios;
+
+
+
+	// Use this for initialization
+	void Start () 
+	{	
+		SetupUI ();
+
+		namesToType.Add ("EmptySpace", 0);
+		namesToType.Add ("Normal", 1);
+		namesToType.Add ("Blogger", 2);
+		namesToType.Add ("Grandma", 3);
+		namesToType.Add ("Best Friend", 4);
+		namesToType.Add ("Dad", 5);
+
+		LoadLevelNumber(6);
+		audios = GetComponents<AudioSource>(); 
+	}
+
+
+	void SetupUI()
+	{
 		Button quitButton = GameObject.Find ("Quit").GetComponent<Button>();
 		Button resetButton = GameObject.Find ("Clear").GetComponent<Button>();
 		//Button startButton = GameObject.Find ("Activate").GetComponent<Button>();
 
-		//startButton.onClick.AddListener (activateRumor);
-		quitButton.onClick.AddListener (endGame);
-		resetButton.onClick.AddListener (resetPieces);
+		//startButton.onClick.AddListener (ActivateRumor);
+		quitButton.onClick.AddListener (EndGame);
+		quitButton.onClick.AddListener (ButtonPressedSound);
+		resetButton.onClick.AddListener (ResetPieces);
+		resetButton.onClick.AddListener (ButtonPressedSound);
 
 		dropDownMenu.options = new string[] {"Blogger", "Grandma"};
 		dropDownMenu.inventory.Add("Blogger", 1);
@@ -55,7 +79,9 @@ public class Level1 : MonoBehaviour {
 
 	}
 
-	void endGame(){
+	void EndGame()
+	{
+
 		Application.Quit ();
 	}
 
@@ -107,11 +133,12 @@ public class Level1 : MonoBehaviour {
 	   stream.Close( );
 
 	   // after reading in data, generate the board
-	   resetPieces();
+	   ResetPieces();
    	
 	}
 
-	void resetPieces(){
+	void ResetPieces()
+	{
 
 		started = false;
 		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
@@ -156,27 +183,17 @@ public class Level1 : MonoBehaviour {
 		}
 	}
 
-	void activateRumor(){
+	void ButtonPressedSound()
+	{
+		audios[0].Play();
+	}
+
+	void ActivateRumor(){
 		GameObject r = GameObject.FindGameObjectWithTag ("rumor");
 		if (r != null) {
 
 			r.GetComponent<Rumor>().Infect ();
 		}
-	}
-
-	// Use this for initialization
-	void Start () 
-	{	
-		SetupUI ();
-
-		namesToType.Add ("EmptySpace", 0);
-		namesToType.Add ("Normal", 1);
-		namesToType.Add ("Blogger", 2);
-		namesToType.Add ("Grandma", 3);
-		namesToType.Add ("Best Friend", 4);
-		namesToType.Add ("Dad", 5);
-
-		LoadLevelNumber(6);
 	}
 
 
@@ -318,7 +335,7 @@ public class Level1 : MonoBehaviour {
 	}
 
 
-	void checkAndActivate(){
+	void CheckAndActivate(){
 		//print ("Hello");
 		List<Person> accumulator = new List<Person> ();
 		foreach (Person p in toBeActivated) {
@@ -347,7 +364,7 @@ public class Level1 : MonoBehaviour {
 		CheckClick();
 		float curTime = Time.time;
 		if (started && curTime >= startTime+maxSec) {
-			checkAndActivate();
+			CheckAndActivate();
 		}
 	}
 }
