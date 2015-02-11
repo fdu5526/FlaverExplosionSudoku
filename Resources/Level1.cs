@@ -174,7 +174,7 @@ public class Level1 : MonoBehaviour {
 		namesToType.Add ("Best Friend", 4);
 		namesToType.Add ("Dad", 5);
 
-		LoadLevelNumber(1);
+		LoadLevelNumber(6);
 	}
 
 
