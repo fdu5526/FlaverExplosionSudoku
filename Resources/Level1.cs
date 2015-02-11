@@ -25,18 +25,9 @@ public class Level1 : MonoBehaviour {
 	 	4: best friend
 	 	5: dad
 	 */
-	static int[,] setupBoard = new int[,]
-	{
-		{0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 1, 0, 0, 0, 0},
-		{0, 1, 0, 1, 0, 0, 0},
-		{0, 0, 1, 0, 0, 0, 0},
-		{0, 0, 0, 0, 1, 0, 0},
-		{0, 0, 0, 1, 0, 0, 0},
-	};
-	static public int[] setupPlayerPieces = new int[]{2, 3};
-
+	// these are for serialization and resetting the board
+	List<List<int>> setupBoard;
+	List<int> setupPlayerPieces;
 
 	
 	public GameObject[,] gameObjectBoard;
@@ -71,29 +62,46 @@ public class Level1 : MonoBehaviour {
 	{
 		
 		 StreamReader stream = new StreamReader(filename);
+		 bool isFirst = true;
+
+		 setupBoard = new List<List<int>>();
+		 setupPlayerPieces = new List<int>();
 
 	   while(!stream.EndOfStream)
 	   {
-	       string line = stream.ReadLine( );
-	       print(line + "\n");
-	       // Do Something with the input. 
+	   		string line = stream.ReadLine( );
+	   		print(line + "\n");
+
+	   		if(isFirst)
+	   		{
+	   			// add placable pieces
+	   			for(int i = 0; i < line.Length; i++)
+	   			{
+	   				if(line[i] == ' ')
+	   					continue;
+	   				setupPlayerPieces.Add((int)(line[i] - '0'));
+	   			}
+	   			
+
+	   			isFirst = false;
+	   		}
+	   		else
+	   		{
+	   			// add board
+	   			List<int> row = new List<int>();
+	   			// add placable pieces
+	   			for(int i = 0; i < line.Length; i++)
+	   			{
+	   				if(line[i] == ' ')
+	   					continue;
+	   				row.Add((int)(line[i] - '0'));
+	   			}
+
+	   			setupBoard.Add(row);
+	   		}
 	   }
+
 	   stream.Close( );  
-	   
-
-
-   	setupBoard = new int[,]
-		{
-			{0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 1, 0, 0, 0, 0},
-			{0, 1, 0, 1, 0, 0, 0},
-			{0, 0, 1, 0, 0, 0, 0},
-			{0, 0, 0, 0, 1, 0, 0},
-			{0, 0, 0, 1, 0, 0, 0},
-		};
-		setupPlayerPieces = new int[]{2, 3};
-
    	
 	}
 
@@ -102,8 +110,8 @@ public class Level1 : MonoBehaviour {
 		started = false;
 		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
 
-		height = setupBoard.GetLength(0);
-		width = setupBoard.GetLength(1);
+		height = setupBoard.Count;
+		width = setupBoard[0].Count;
 		gridWidth = 30f/(float)height;
 
 		// delete all the old stuff
@@ -135,7 +143,7 @@ public class Level1 : MonoBehaviour {
 		{
 			for(int r = 0; r < height; r++)
 			{
-				AddPieceToBoard(setupBoard[r,c], r, c);
+				AddPieceToBoard(setupBoard[r][c], r, c);
 				totalCount++;
 			}
 		}
