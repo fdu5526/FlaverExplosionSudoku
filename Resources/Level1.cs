@@ -63,7 +63,7 @@ public class Level1 : MonoBehaviour {
 		dropDownMenu.namesToType = namesToType;
 		dropDownMenu.typeToNames = typeToNames;
 
-		LoadLevelNumber(3);
+		LoadLevelNumber(6);
 		audios = GetComponents<AudioSource>(); 
 	}
 
