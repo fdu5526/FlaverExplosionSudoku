@@ -26,7 +26,7 @@ public class Level1 : MonoBehaviour {
 	int curLevel;
 	int maxLevel = 6;
 
-	GameObject whiteBackground, blogTutorial, granTutorial, bfTutorial, canvas, credit;
+	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit;
 
 	/*
 	 	0: empty square
@@ -73,6 +73,7 @@ public class Level1 : MonoBehaviour {
 		dropDownMenu.typeToNames = typeToNames;
 
 		whiteBackground = GameObject.Find ("white");
+		normalTutorial = GameObject.Find ("normalTutorial");
 		blogTutorial = GameObject.Find ("blogTutorial");
 		granTutorial = GameObject.Find ("granTutorial");
 		bfTutorial = GameObject.Find ("bfTutorial");
@@ -151,7 +152,7 @@ public class Level1 : MonoBehaviour {
 		{
 			case 1:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
-				blogTutorial.GetComponent<SpriteRenderer>().enabled = true;
+				normalTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
 				break;
 			case 2:
@@ -226,7 +227,7 @@ public class Level1 : MonoBehaviour {
 		winPanel.SetActive (true);
 
 		// check if player has won
-		if(percentage < 1)///TODO
+		if(percentage < 75)///TODO
 		{
 			popupContinue.interactable = false;
 			audios[7].Play();
@@ -237,7 +238,6 @@ public class Level1 : MonoBehaviour {
 			audios[8].Play();
 		}
 
-		print (popupText.text);
 		popupText.text = percentage.ToString() + "%";
 	
 	}
@@ -303,6 +303,11 @@ public class Level1 : MonoBehaviour {
 	void ButtonPressedSound()
 	{
 		audios[0].Play();
+	}
+
+	void PickUpPieceSound()
+	{
+		audios[1].Play();
 	}
 
 	void ActivateRumor(){
@@ -397,15 +402,23 @@ public class Level1 : MonoBehaviour {
 	// player clicked somewhere, figure out what to do
 	void CheckClick()
 	{
+
 		if(Input.GetMouseButtonDown(0) && whiteBackground.GetComponent<SpriteRenderer>().enabled)
 		{
 			if(credit.GetComponent<SpriteRenderer>().enabled)
 			{
 				EndGame();
 			}
+			else if(normalTutorial.GetComponent<SpriteRenderer>().enabled)
+			{
+				normalTutorial.GetComponent<SpriteRenderer>().enabled = false;
+				blogTutorial.GetComponent<SpriteRenderer>().enabled = true;
+			}
 			else
 			{
+
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = false;
+				normalTutorial.GetComponent<SpriteRenderer>().enabled = false;
 				blogTutorial.GetComponent<SpriteRenderer>().enabled = false;
 				granTutorial.GetComponent<SpriteRenderer>().enabled = false;
 				bfTutorial.GetComponent<SpriteRenderer>().enabled = false;
@@ -427,6 +440,11 @@ public class Level1 : MonoBehaviour {
 
 		percentageComplete.text = "Percent Covered: " + (int)percent + "%";*/
 		CalculatePercentage ();
+
+
+		// player cannot place anymore
+		if(hasActivated)
+			return;
 
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
@@ -467,7 +485,7 @@ public class Level1 : MonoBehaviour {
 
 			}
 			// activate piece
-			else if (!hasActivated)
+			else
 			{
 
 				if(gameObjectBoard[r,c] != null)

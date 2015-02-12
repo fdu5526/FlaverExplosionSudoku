@@ -21,6 +21,8 @@ public class DropDown : MonoBehaviour {
 
 	[SerializeField] GameObject buttonPrefab;
 
+	AudioSource[] audios;
+
 	/*
 	 	0: empty square
 	 	1: normal person
@@ -47,6 +49,8 @@ public class DropDown : MonoBehaviour {
 		*/
 		//topButton.GetComponentInChildren<Text> ().text = "Select a Piece";
 		selection = -1;
+
+		audios = GetComponents<AudioSource>(); 
 	}
 
 	public void destroyButtons(){
@@ -126,6 +130,8 @@ public class DropDown : MonoBehaviour {
 	}
 
 	void setSelection(int s){
+
+		audios[0].Play();
 		selection = s;
 		string name = typeToNames[s];
 		topButton.GetComponentInChildren<Text>().text = name + " " + inventory[name];
