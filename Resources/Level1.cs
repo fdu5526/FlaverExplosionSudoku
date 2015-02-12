@@ -332,11 +332,8 @@ public class Level1 : MonoBehaviour {
 			int c = hit.transform.gameObject.GetComponent<Person>().x;
 
 			// hit empty space, place down player's piece
-			if(hit.collider.tag.Equals("emptySpace"))
+			if(hit.collider.tag.Equals("emptySpace") && gridBoard[r,c] == null)
 			{
-				// not an actual empty space
-				if(gridBoard[r,c] != null)
-					return;
 
 				// from the current selection determine the current type of piece to place
 				// and if you have more than 0 of it to place

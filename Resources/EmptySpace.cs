@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class EmptySpace : Person {
 
 	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
+	static Color redColor = new Color(0.86f,0.21f,0.14f,1f);
+
 	public bool isActuallyEmpty;
 	public bool isActivated, isFlashing;
 	float maxSec = 0.3f;
@@ -33,7 +35,7 @@ public class EmptySpace : Person {
  		if(isActuallyEmpty)
    		gameObject.renderer.material.color = Color.green;
    	else
-   		gameObject.renderer.material.color = Color.red;
+   		gameObject.renderer.material.color = blueColor;
  	}
 
  	void OnMouseExit()
@@ -48,7 +50,7 @@ public class EmptySpace : Person {
  		
  		if(isActuallyEmpty)
 		{
-			gameObject.renderer.material.color = Color.red;
+			gameObject.renderer.material.color = redColor;
 			isFlashing = true;
 			startTime = Time.time;
 		}
