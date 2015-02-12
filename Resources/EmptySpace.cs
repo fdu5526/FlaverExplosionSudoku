@@ -58,6 +58,10 @@ public class EmptySpace : Person {
 		{
 			gameObject.renderer.material.color = blueColor;
 			isActivated = true;
+
+			//TODO do i need this below?
+			isFlashing = true;
+			startTime = Time.time;
 		}
  		
 

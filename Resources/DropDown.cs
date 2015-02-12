@@ -83,6 +83,12 @@ public class DropDown : MonoBehaviour {
 			createButtons();
 			initialized = false;
 		}
+
+		if(selection != -1)
+		{
+			string name = typeToNames[selection];
+			topButton.GetComponentInChildren<Text>().text = name + " " + inventory[name];
+		}
 	}
 
 	public void resetButtons(){
@@ -121,7 +127,8 @@ public class DropDown : MonoBehaviour {
 
 	void setSelection(int s){
 		selection = s;
-		topButton.GetComponentInChildren<Text>().text = typeToNames[s];
+		string name = typeToNames[s];
+		topButton.GetComponentInChildren<Text>().text = name + " " + inventory[name];
 
 	}
 
