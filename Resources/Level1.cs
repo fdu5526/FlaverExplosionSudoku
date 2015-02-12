@@ -238,7 +238,7 @@ public class Level1 : MonoBehaviour {
 		winPanel.SetActive (true);
 
 		// check if player has won
-		if(percentage < 1)
+		if(percentage < 75)
 		{
 			popupContinue.interactable = false;
 			audios[7].Play();
