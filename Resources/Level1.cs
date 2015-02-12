@@ -15,7 +15,7 @@ public class Level1 : MonoBehaviour {
 	List<Person> toBeActivated;
 	float startTime;
 	float maxSec = 0.5f;
-
+	public Dictionary <int, string> typeToNames = new Dictionary<int, string>();
 	public Dictionary <string, int> namesToType = new Dictionary<string, int>();
 	public DropDown dropDownMenu;
 
@@ -55,11 +55,31 @@ public class Level1 : MonoBehaviour {
 		namesToType.Add ("Grandma", 3);
 		namesToType.Add ("Best Friend", 4);
 		namesToType.Add ("Dad", 5);
+		typeToNames.Add (1, "Normal");
+		typeToNames.Add (2, "Blogger");
+		typeToNames.Add (3, "Grandma");
+		typeToNames.Add (4, "Best Friend");
+		typeToNames.Add (5, "Dad");
+		dropDownMenu.namesToType = namesToType;
+		dropDownMenu.typeToNames = typeToNames;
 
 		LoadLevelNumber(6);
 		audios = GetComponents<AudioSource>(); 
 	}
 
+	void GenerateOptionsAndInventory(){
+		Dictionary<string, int> count = new Dictionary<string, int> ();
+		foreach (int t in playerPieces) {
+			string nm = typeToNames[t];
+			if(!count.ContainsKey(nm)){
+				count.Add(nm, 1);
+			}else{
+				count[nm]++;
+			}
+		}
+		dropDownMenu.inventory = count;
+		dropDownMenu.options = count.Keys.ToArray ();
+	}
 
 	void SetupUI()
 	{
@@ -73,10 +93,8 @@ public class Level1 : MonoBehaviour {
 		resetButton.onClick.AddListener (ResetPieces);
 		resetButton.onClick.AddListener (ButtonPressedSound);
 
-		dropDownMenu.options = new string[] {"Blogger", "Grandma"};
-		dropDownMenu.inventory.Add("Blogger", 1);
-		dropDownMenu.inventory.Add ("Grandma", 1);
-		dropDownMenu.initialized = true;
+		//GenerateOptionsAndInventory ();
+		//dropDownMenu.createButtons ();
 
 	}
 
@@ -89,6 +107,7 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
+		dropDownMenu.destroyButtons ();
 		string filename = "Assets/Resources/Levels/Level" + l.ToString() + ".txt";
 		StreamReader stream = new StreamReader(filename);
 		bool isFirst = true;
@@ -135,6 +154,9 @@ public class Level1 : MonoBehaviour {
 
 	   // after reading in data, generate the board
 	   ResetPieces();
+	  // GenerateOptionsAndInventory ();
+		dropDownMenu.createButtons ();
+	   
    	
 	}
 
@@ -167,7 +189,7 @@ public class Level1 : MonoBehaviour {
 		}
 		playerPieces = null;
 
-		//TODO
+
 		dropDownMenu.inventory["Blogger"] = 1;
 		dropDownMenu.inventory ["Grandma"] = 1;
 		//dropDownMenu.resetButtons ();
@@ -187,6 +209,10 @@ public class Level1 : MonoBehaviour {
 			}
 
 		}
+
+		GenerateOptionsAndInventory ();
+		dropDownMenu.resetButtons ();
+
 	}
 
 	void ButtonPressedSound()
