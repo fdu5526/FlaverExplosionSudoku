@@ -34,9 +34,7 @@ public class Normal : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx++;
 					cy++;
@@ -51,9 +49,7 @@ public class Normal : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx++;
 					cy--;
@@ -67,9 +63,7 @@ public class Normal : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx--;
 					cy--;
@@ -83,9 +77,7 @@ public class Normal : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx--;
 					cy++;
