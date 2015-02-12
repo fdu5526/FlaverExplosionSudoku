@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EmptySpace : Person {
 
-	static Color blueColor = new Color(0.23f,0.35f,0.59f,1f);
+	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
 	public bool isActuallyEmpty;
 	public bool isActivated;
 	float maxSec = 0.1f;

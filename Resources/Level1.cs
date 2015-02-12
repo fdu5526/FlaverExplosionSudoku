@@ -226,22 +226,22 @@ public class Level1 : MonoBehaviour {
 			case 2:
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/BloggerPerson"));
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																					 1f, gridWidth*c-(width/2*gridWidth));
+																					 2.4f, gridWidth*c-(width/2*gridWidth));
 				break;
 			case 3:
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/GrandmaPerson"));
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																					 1f, gridWidth*c-(width/2*gridWidth));
+																					 2.4f, gridWidth*c-(width/2*gridWidth));
 				break;
 			case 4:
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/BestFriendPerson"));
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																					 1f, gridWidth*c-(width/2*gridWidth));
+																					 2.4f, gridWidth*c-(width/2*gridWidth));
 				break;
 			case 5:
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/DadPerson"));
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																					 1f, gridWidth*c-(width/2*gridWidth));
+																					 2.4f, gridWidth*c-(width/2*gridWidth));
 				break;
 			default:
 				break;
