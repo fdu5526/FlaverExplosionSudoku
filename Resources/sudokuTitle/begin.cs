@@ -10,7 +10,7 @@ public class begin : MonoBehaviour {
 
 	void OnMouseDown()
 	{
-		Application.LoadLevel ("level1");
+		Application.LoadLevel ("Level1");
 	}
 	
 	// Update is called once per frame

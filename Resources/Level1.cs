@@ -26,6 +26,8 @@ public class Level1 : MonoBehaviour {
 	int curLevel;
 	int maxLevel = 6;
 
+	GameObject whiteBackground, blogTutorial, granTutorial, bfTutorial, canvas, credit;
+
 	/*
 	 	0: empty square
 	 	1: normal person
@@ -70,6 +72,13 @@ public class Level1 : MonoBehaviour {
 		dropDownMenu.namesToType = namesToType;
 		dropDownMenu.typeToNames = typeToNames;
 
+		whiteBackground = GameObject.Find ("white");
+		blogTutorial = GameObject.Find ("blogTutorial");
+		granTutorial = GameObject.Find ("granTutorial");
+		bfTutorial = GameObject.Find ("bfTutorial");
+		canvas = GameObject.Find ("Canvas");
+		credit = GameObject.Find ("credit");
+
 
 		LoadLevelNumber(1);
 		curLevel = 1;
@@ -94,11 +103,17 @@ public class Level1 : MonoBehaviour {
 	void LoadNext(){
 		winPanel.SetActive (false);
 		if (curLevel == maxLevel) {
-			curLevel = 1;
+
+			canvas.GetComponent<Canvas>().enabled = false;
+			credit.GetComponent<SpriteRenderer>().enabled = true;
+			whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 		} else {
 			curLevel++;
+			LoadLevelNumber (curLevel);
 		}
-		LoadLevelNumber (curLevel);
+		
+
+
 	}
 
 	void SetupUI()
@@ -132,6 +147,27 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
+		switch(l)
+		{
+			case 1:
+				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
+				blogTutorial.GetComponent<SpriteRenderer>().enabled = true;
+				canvas.GetComponent<Canvas>().enabled = false;
+				break;
+			case 2:
+				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
+				granTutorial.GetComponent<SpriteRenderer>().enabled = true;
+				canvas.GetComponent<Canvas>().enabled = false;
+				break;
+			case 4:
+				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
+				bfTutorial.GetComponent<SpriteRenderer>().enabled = true;
+				canvas.GetComponent<Canvas>().enabled = false;
+				break;
+			default:
+				break;
+		}
+
 		dropDownMenu.destroyButtons ();
 		string filename = "Assets/Resources/Levels/Level" + l.ToString() + ".txt";
 		StreamReader stream = new StreamReader(filename);
@@ -190,7 +226,7 @@ public class Level1 : MonoBehaviour {
 		winPanel.SetActive (true);
 
 		// check if player has won
-		if(percentage < 75)
+		if(percentage < 1)///TODO
 		{
 			popupContinue.interactable = false;
 			audios[7].Play();
@@ -202,13 +238,7 @@ public class Level1 : MonoBehaviour {
 		}
 
 		print (popupText.text);
-		if (curLevel == maxLevel) {
-			popupText.text = "You've won!";
-		
-		} else {
-			popupText.text = percentage.ToString() + "%";
-		}
-		
+		popupText.text = percentage.ToString() + "%";
 	
 	}
 
@@ -367,6 +397,25 @@ public class Level1 : MonoBehaviour {
 	// player clicked somewhere, figure out what to do
 	void CheckClick()
 	{
+		if(Input.GetMouseButtonDown(0) && whiteBackground.GetComponent<SpriteRenderer>().enabled)
+		{
+			if(credit.GetComponent<SpriteRenderer>().enabled)
+			{
+				EndGame();
+			}
+			else
+			{
+				whiteBackground.GetComponent<SpriteRenderer>().enabled = false;
+				blogTutorial.GetComponent<SpriteRenderer>().enabled = false;
+				granTutorial.GetComponent<SpriteRenderer>().enabled = false;
+				bfTutorial.GetComponent<SpriteRenderer>().enabled = false;
+				canvas.GetComponent<Canvas>().enabled = true;
+			}
+			return;
+		}
+
+
+
 		// update percentage covered, done quickly
 		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
 
