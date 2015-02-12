@@ -32,9 +32,10 @@ public class Level1 : MonoBehaviour {
 	// for UI
 	private Rect barPosition, maxBarPosition;
 	private float barWidth;
-	private const float maxBarWidth = 300f;
-	private const float barHeight = 30f;
+	private const float maxBarWidth = 195f;
+	private const float barHeight = 16f;
 	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
+	static Color redColor = new Color(0.86f,0.21f,0.14f,1f);
 
 	/*
 	 	0: empty square
@@ -157,6 +158,7 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
+		
 		switch(l)
 		{
 			case 1:
@@ -429,7 +431,7 @@ public class Level1 : MonoBehaviour {
 		}
 		float percent = ((float)c / (float)total) * 100f;
 		percentage = (int)percent;
-		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
+		percentageComplete.text = (int)percent + "%";
 	}
 
 	// player clicked somewhere, figure out what to do
@@ -589,17 +591,35 @@ public class Level1 : MonoBehaviour {
 
   void DrawPercentBar() 
   {
-  	 barPosition = new Rect(17f, 25f, barWidth, barHeight);
-     Texture2D texture = new Texture2D(1, 1);
-     texture.SetPixel(0,0, blueColor);
-     texture.Apply();
-     GUI.skin.box.normal.background = texture;
-     GUI.Box(barPosition, GUIContent.none);
+		if(barWidth < 10f)
+  		return;
+
+	 	barPosition = new Rect(12f, 18f, barWidth, barHeight);
+   	Texture2D texture = new Texture2D(1, 1);
+   	texture.SetPixel(0,0, blueColor);
+		texture.Apply();
+		GUI.skin.box.normal.background = texture;
+		GUI.Box(barPosition, GUIContent.none);
+
+
+		if(winPanel.active)
+		{
+			barPosition = new Rect(190f, 194f, barWidth*1.34f, 34f);
+	   	texture = new Texture2D(1, 1);
+	   	
+	   	texture.SetPixel(0,0, blueColor);
+			texture.Apply();
+			GUI.skin.box.normal.background = texture;
+			GUI.Box(barPosition, GUIContent.none);
+		}
  	}
 
 
   void OnGUI()
   {
+  	if(whiteBackground.GetComponent<SpriteRenderer>().enabled)
+  		return;
+
   	barWidth = maxBarWidth * percentage / 100f;
   	DrawPercentBar();
 
