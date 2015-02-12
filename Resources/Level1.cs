@@ -26,7 +26,15 @@ public class Level1 : MonoBehaviour {
 	int curLevel;
 	int maxLevel = 6;
 
+	// for tutorials
 	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit;
+
+	// for UI
+	private Rect barPosition, maxBarPosition;
+	private float barWidth;
+	private const float maxBarWidth = 300f;
+	private const float barHeight = 30f;
+	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
 
 	/*
 	 	0: empty square
@@ -80,11 +88,12 @@ public class Level1 : MonoBehaviour {
 		canvas = GameObject.Find ("Canvas");
 		credit = GameObject.Find ("credit");
 
-
-		LoadLevelNumber(1);
-		curLevel = 1;
-
 		audios = GetComponents<AudioSource>(); 
+
+		curLevel = 1;
+		LoadLevelNumber(curLevel);
+		
+		barWidth = percentage;
 	}
 
 	void GenerateOptionsAndInventory(){
@@ -154,16 +163,40 @@ public class Level1 : MonoBehaviour {
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
+				audios[9].Play();
+				audios[10].Stop();
+				audios[11].Stop();
 				break;
 			case 2:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				granTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
+				audios[9].Stop();
+				audios[10].Play();
+				audios[11].Stop();
+				break;
+			case 3:
+				audios[9].Stop();
+				audios[10].Stop();
+				audios[11].Play();
 				break;
 			case 4:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				bfTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
+				audios[9].Play();
+				audios[10].Stop();
+				audios[11].Stop();
+				break;
+			case 5:
+				audios[9].Stop();
+				audios[10].Play();
+				audios[11].Stop();
+				break;
+			case 6:
+				audios[9].Stop();
+				audios[10].Stop();
+				audios[11].Play();
 				break;
 			default:
 				break;
@@ -227,9 +260,10 @@ public class Level1 : MonoBehaviour {
 		winPanel.SetActive (true);
 
 		// check if player has won
-		if(percentage < 75)///TODO
+		if(percentage < 1)
 		{
 			popupContinue.interactable = false;
+			popupContinue.GetComponent<Image>();
 			audios[7].Play();
 		}
 		else
@@ -552,6 +586,27 @@ public class Level1 : MonoBehaviour {
 		}
 		startTime = Time.time;
 	}
+
+
+  void DrawPercentBar() 
+  {
+  	 barPosition = new Rect(17f, 25f, barWidth, barHeight);
+     Texture2D texture = new Texture2D(1, 1);
+     texture.SetPixel(0,0, blueColor);
+     texture.Apply();
+     GUI.skin.box.normal.background = texture;
+     GUI.Box(barPosition, GUIContent.none);
+ 	}
+
+
+  void OnGUI()
+  {
+  	barWidth = maxBarWidth * percentage / 100f;
+  	DrawPercentBar();
+
+   	//GUI.DrawTexture(outlinePosition, bar, ScaleMode.ScaleToFit, true, 10.0F);
+    
+  }
 
 	
 	// Update is called once per frame
