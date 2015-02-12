@@ -40,9 +40,7 @@ public class BestFriend : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx++;
 					cy++;
@@ -57,9 +55,7 @@ public class BestFriend : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx++;
 					cy--;
@@ -73,9 +69,7 @@ public class BestFriend : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx--;
 					cy--;
@@ -89,9 +83,7 @@ public class BestFriend : Person {
 							break;
 						}
 						Person p = board[cy, cx].GetComponent<Person>();
-						if(!(p is EmptySpace)){
-							toBeActivated.Add(p);
-						}
+						toBeActivated.Add(p);
 					}
 					cx--;
 					cy++;
