@@ -16,7 +16,7 @@ public class BestFriend : Person {
 	}
 
 	override public List<Person> Activate (){
-		gameObject.renderer.material.color = Color.red;
+		this.GetComponent<Animator>().SetBool("activated", true);
 		activated = true;
 		List<Person> toBeActivated = new List<Person> ();
 		
