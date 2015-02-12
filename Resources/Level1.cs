@@ -297,13 +297,13 @@ public class Level1 : MonoBehaviour {
 	void CalculatePercentage(){
 		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
 		int c = 0;
-		int total = persons.Length;/*
-		TODO
+		int total = persons.Length;
+
 		foreach (GameObject p in persons) {
 			if(p.GetComponent<Person>().activated){
 				c++;
 			}
-		}*/
+		}
 		float percent = ((float)c / (float)total) * 100f;
 		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
 	}
