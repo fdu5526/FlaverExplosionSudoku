@@ -8,9 +8,9 @@ public class grandmaTutorial : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		gma0 = Resources.Load<Sprite>("Levels/grandmaTutorial/gma0");
-		gma1 = Resources.Load<Sprite>("Levels/grandmaTutorial/gma1");
-		gma2 = Resources.Load<Sprite>("Levels/grandmaTutorial/gma2");
+		gma0 = Resources.Load<Sprite>("grandmaTutorial/gma0");
+		gma1 = Resources.Load<Sprite>("grandmaTutorial/gma1");
+		gma2 = Resources.Load<Sprite>("grandmaTutorial/gma2");
 
 		gameObject.GetComponent<SpriteRenderer>().sprite = gma0;
 		state = 0;

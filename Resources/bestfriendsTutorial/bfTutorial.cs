@@ -8,13 +8,13 @@ public class bfTutorial : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		bf0 = Resources.Load<Sprite>("Levels/bestfriendsTutorial/bf0");
-		bf1 = Resources.Load<Sprite>("Levels/bestfriendsTutorial/bf1");
-		bf2 = Resources.Load<Sprite>("Levels/bestfriendsTutorial/bf2");
-		bf3 = Resources.Load<Sprite>("Levels/bestfriendsTutorial/bf3");
-		bf4 = Resources.Load<Sprite>("Levels/bestfriendsTutorial/bf4");
-		bf5 = Resources.Load<Sprite>("Levels/bestfriendsTutorial/bf5");
-		bf6 = Resources.Load<Sprite>("Levels/bestfriendsTutorial/bf6");
+		bf0 = Resources.Load<Sprite>("bestfriendsTutorial/bf0");
+		bf1 = Resources.Load<Sprite>("bestfriendsTutorial/bf1");
+		bf2 = Resources.Load<Sprite>("bestfriendsTutorial/bf2");
+		bf3 = Resources.Load<Sprite>("bestfriendsTutorial/bf3");
+		bf4 = Resources.Load<Sprite>("bestfriendsTutorial/bf4");
+		bf5 = Resources.Load<Sprite>("bestfriendsTutorial/bf5");
+		bf6 = Resources.Load<Sprite>("bestfriendsTutorial/bf6");
 
 		gameObject.GetComponent<SpriteRenderer>().sprite = bf0;
 		state = 0;

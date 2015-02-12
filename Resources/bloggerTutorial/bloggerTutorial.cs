@@ -8,10 +8,10 @@ public class bloggerTutorial : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		blogger0 = Resources.Load<Sprite>("Levels/bloggerTutorial/blogger0");
-		blogger1 = Resources.Load<Sprite>("Levels/bloggerTutorial/blogger1");
-		blogger2 = Resources.Load<Sprite>("Levels/bloggerTutorial/blogger2");
-		blogger3 = Resources.Load<Sprite>("Levels/bloggerTutorial/blogger3");
+		blogger0 = Resources.Load<Sprite>("bloggerTutorial/blogger0");
+		blogger1 = Resources.Load<Sprite>("bloggerTutorial/blogger1");
+		blogger2 = Resources.Load<Sprite>("bloggerTutorial/blogger2");
+		blogger3 = Resources.Load<Sprite>("bloggerTutorial/blogger3");
 
 		gameObject.GetComponent<SpriteRenderer>().sprite = blogger0;
 		state = 0;

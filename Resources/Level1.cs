@@ -16,7 +16,7 @@ public class Level1 : MonoBehaviour {
 	public Button popupContinue;
 	public GameObject winPanel;
 	int totalCount, partialCount = 0;
-	private bool started;
+	private bool started, hasActivated;
 	List<Person> toBeActivated;
 	float startTime;
 	float maxSec = 0.5f;
@@ -189,14 +189,26 @@ public class Level1 : MonoBehaviour {
 	void WinLevel(){
 		winPanel.SetActive (true);
 
+		// check if player has won
+		if(percentage < 75)
+		{
+			popupContinue.interactable = false;
+			audios[7].Play();
+		}
+		else
+		{
+			popupContinue.interactable = true;
+			audios[8].Play();
+		}
+
 		print (popupText.text);
 		if (curLevel == maxLevel) {
 			popupText.text = "You've won!";
 		
 		} else {
-			popupText.text = "You've beaten Level " + curLevel + "!";
+			popupText.text = percentage.ToString() + "%";
 		}
-				
+		
 	
 	}
 
@@ -206,6 +218,7 @@ public class Level1 : MonoBehaviour {
 
 		winPanel.SetActive (false);
 		started = false;
+		hasActivated = false;
 		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
 
 		// recalculate the width and height
@@ -405,10 +418,10 @@ public class Level1 : MonoBehaviour {
 
 			}
 			// activate piece
-			else
+			else if (!hasActivated)
 			{
 
-				if(gameObjectBoard[r,c] != null && !started)
+				if(gameObjectBoard[r,c] != null)
 				{
 					Person p = gameObjectBoard[r,c].GetComponent<Person>();
 					gridBoard[r,c].GetComponent<Person>().Activate();
@@ -420,6 +433,7 @@ public class Level1 : MonoBehaviour {
 
 						startTime = Time.time;
 						started = true;
+						hasActivated = true;
 
 						//play first piece
 						if(p is Normal) audios[3].Play();
