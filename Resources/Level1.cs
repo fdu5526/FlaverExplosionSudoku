@@ -377,7 +377,12 @@ public class Level1 : MonoBehaviour {
 
 						startTime = Time.time;
 						started = true;
-						audios[3].Play();
+
+						//play first piece
+						if(p is Normal) audios[3].Play();
+						else if (p is Blogger) audios[4].Play();
+						else if (p is Grandma) audios[5].Play();
+						else if (p is BestFriend) audios[6].Play();
 
 					}else{
 						//print ("null person");
@@ -392,7 +397,16 @@ public class Level1 : MonoBehaviour {
 		//print ("Hello");
 		List<Person> accumulator = new List<Person> ();
 		foreach (Person p in toBeActivated) {
+
+
 			if(!p.activated){
+
+				//ActivatioN SouNd
+				if(p is Normal) audios[3].Play();
+				else if (p is Blogger) audios[4].Play();
+				else if (p is Grandma) audios[5].Play();
+				else if (p is BestFriend) audios[6].Play();
+
 				//print (p.GetInstanceID());
 				partialCount++;
 				accumulator.AddRange(p.Activate());
@@ -422,8 +436,7 @@ public class Level1 : MonoBehaviour {
 		float curTime = Time.time;
 		if (started && curTime >= startTime+maxSec) {
 			CheckAndActivate();
-			if(started)
-				audios[3].Play();
+
 		}
 	}
 }
