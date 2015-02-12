@@ -20,8 +20,11 @@ public class Grandma : Person {
 		int height = GameObject.Find ("GameMaster").GetComponent<Level1>().height;
 		int width = GameObject.Find ("GameMaster").GetComponent<Level1>().width;
 
+
 		if (this.x != null && this.y != null) {
 			// (y+3, x), (y-3, x), (y, x+3), (y, x-3)
+
+			// (y+3, x-1) (y+3, x) (y+3, x+1)
 			if(this.y+range < height){
 				if(board[this.y+range, this.x] != null){
 					Person p = board[this.y+range, this.x].GetComponent<Person>();
@@ -29,7 +32,24 @@ public class Grandma : Person {
 						toBeActivated.Add(p);
 					}
 				}
+				if(this.x-1 >=0){
+					if(board[this.y+range, this.x-1] != null){
+						Person p = board[this.y+range, this.x-1].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
+				if(this.x+1 < width){
+					if(board[this.y+range, this.x+1] != null){
+						Person p = board[this.y+range, this.x+1].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
 			}
+			// (y-3, x-1), (y-3, x), (y-3, x+1)
 			if(this.y - range >= 0){
 				if(board[this.y-range, this.x] != null){
 					Person p = board[this.y-range, this.x].GetComponent<Person>();
@@ -37,7 +57,24 @@ public class Grandma : Person {
 						toBeActivated.Add(p);
 					}
 				}
+				if(this.x-1 >=0){
+					if(board[this.y-range, this.x-1] != null){
+						Person p = board[this.y-range, this.x-1].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
+				if(this.x+1 < width){
+					if(board[this.y-range, this.x+1] != null){
+						Person p = board[this.y-range, this.x+1].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
 			}
+			// (y-1, x+3) (y, x+3) (y+1, x+3)
 			if(this.x + range < width){
 				if(board[this.y, this.x + range] != null){
 					Person p = board[this.y, this.x + range].GetComponent<Person>();
@@ -45,7 +82,24 @@ public class Grandma : Person {
 						toBeActivated.Add(p);
 					}
 				}
+				if(this.y-1 >= 0){
+					if(board[this.y-1, this.x + range] != null){
+						Person p = board[this.y-1, this.x + range].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
+				if(this.y+1 < height){
+					if(board[this.y+1, this.x + range] != null){
+						Person p = board[this.y+1, this.x + range].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
 			}
+			// (y-1, x-3) (y, x-3) (y+1, x-3)
 			if(this.x - range >= 0){
 				if(board[this.y, this.x-range] != null){
 					Person p = board[this.y, this.x-range].GetComponent<Person>();
@@ -53,8 +107,25 @@ public class Grandma : Person {
 						toBeActivated.Add(p);
 					}
 				}
+				if(this.y-1 >= 0){
+					if(board[this.y-1, this.x - range] != null){
+						Person p = board[this.y-1, this.x - range].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
+				if(this.y+1 < height){
+					if(board[this.y+1, this.x - range] != null){
+						Person p = board[this.y+1, this.x - range].GetComponent<Person>();
+						if(!(p is EmptySpace)){
+							toBeActivated.Add(p);
+						}
+					}
+				}
 			}
 		}
+
 
 		return toBeActivated;
 	}
