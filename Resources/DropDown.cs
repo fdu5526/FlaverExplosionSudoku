@@ -45,7 +45,7 @@ public class DropDown : MonoBehaviour {
 		typeToNames.Add (4, "Best Friend");
 		typeToNames.Add (5, "Dad");
 		*/
-		topButton.GetComponentInChildren<Text> ().text = "Select a Piece";
+		//topButton.GetComponentInChildren<Text> ().text = "Select a Piece";
 		selection = -1;
 	}
 

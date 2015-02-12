@@ -191,11 +191,10 @@ public class Level1 : MonoBehaviour {
 
 		print (popupText.text);
 		if (curLevel == maxLevel) {
-			popupText.text = "You've won! Would you like to restart at Level 1 or play this level again?";
+			popupText.text = "You've won!";
 		
 		} else {
-			popupText.text = "You've beaten Level " + curLevel + "! You spread the word to " + percentage + "% of the people on the board. Would you like to play again or move on to the next level?";
-		
+			popupText.text = "You've beaten Level " + curLevel + "!";
 		}
 				
 	
