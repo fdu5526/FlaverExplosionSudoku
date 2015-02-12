@@ -10,6 +10,11 @@ using System.IO;
 public class Level1 : MonoBehaviour {
 
 	public Text percentageComplete;
+	public int percentage = 0;
+	public Text popupText;
+	public Button popupReset;
+	public Button popupContinue;
+	public GameObject winPanel;
 	int totalCount, partialCount = 0;
 	private bool started;
 	List<Person> toBeActivated;
@@ -18,6 +23,8 @@ public class Level1 : MonoBehaviour {
 	public Dictionary <int, string> typeToNames = new Dictionary<int, string>();
 	public Dictionary <string, int> namesToType = new Dictionary<string, int>();
 	public DropDown dropDownMenu;
+	int curLevel;
+	int maxLevel = 6;
 
 	/*
 	 	0: empty square
@@ -63,7 +70,10 @@ public class Level1 : MonoBehaviour {
 		dropDownMenu.namesToType = namesToType;
 		dropDownMenu.typeToNames = typeToNames;
 
-		LoadLevelNumber(6);
+
+		LoadLevelNumber(1);
+		curLevel = 1;
+
 		audios = GetComponents<AudioSource>(); 
 	}
 
@@ -81,6 +91,16 @@ public class Level1 : MonoBehaviour {
 		dropDownMenu.options = count.Keys.ToArray ();
 	}
 
+	void LoadNext(){
+		winPanel.SetActive (false);
+		if (curLevel == maxLevel) {
+			curLevel = 1;
+		} else {
+			curLevel++;
+		}
+		LoadLevelNumber (curLevel);
+	}
+
 	void SetupUI()
 	{
 		Button quitButton = GameObject.Find ("Quit").GetComponent<Button>();
@@ -92,6 +112,11 @@ public class Level1 : MonoBehaviour {
 		quitButton.onClick.AddListener (ButtonPressedSound);
 		resetButton.onClick.AddListener (ResetPieces);
 		resetButton.onClick.AddListener (ButtonPressedSound);
+
+		popupReset.onClick.AddListener (ResetPieces);
+		popupReset.onClick.AddListener (ButtonPressedSound);
+		popupContinue.onClick.AddListener (LoadNext);
+		popupContinue.onClick.AddListener (ButtonPressedSound);
 
 		//GenerateOptionsAndInventory ();
 		//dropDownMenu.createButtons ();
@@ -160,9 +185,27 @@ public class Level1 : MonoBehaviour {
    	
 	}
 
+	// call if win
+	void WinLevel(){
+		winPanel.SetActive (true);
+
+		print (popupText.text);
+		if (curLevel == maxLevel) {
+			popupText.text = "You've won! Would you like to restart at Level 1 or play this level again?";
+		
+		} else {
+			popupText.text = "You've beaten Level " + curLevel + "! You spread the word to " + percentage + "% of the people on the board. Would you like to play again or move on to the next level?";
+		
+		}
+				
+	
+	}
+
+
 	void ResetPieces()
 	{
 
+		winPanel.SetActive (false);
 		started = false;
 		percentageComplete = GameObject.FindGameObjectWithTag ("percentage").GetComponent<Text> ();
 
@@ -305,6 +348,7 @@ public class Level1 : MonoBehaviour {
 			}
 		}
 		float percent = ((float)c / (float)total) * 100f;
+		percentage = (int)percent;
 		percentageComplete.text = "Percent Covered: " + (int)percent + "%";
 	}
 
@@ -338,8 +382,8 @@ public class Level1 : MonoBehaviour {
 				// from the current selection determine the current type of piece to place
 				// and if you have more than 0 of it to place
 				currentPlayerPieceIndex = playerPieces.IndexOf(dropDownMenu.selection);
-				print (dropDownMenu.selection);
-				print (currentPlayerPieceIndex);
+				//print (dropDownMenu.selection);
+				//print (currentPlayerPieceIndex);
 
 				if(playerPieces.Count != 0 && currentPlayerPieceIndex != -1)
 				{
@@ -377,7 +421,12 @@ public class Level1 : MonoBehaviour {
 
 						startTime = Time.time;
 						started = true;
-						audios[3].Play();
+
+						//play first piece
+						if(p is Normal) audios[3].Play();
+						else if (p is Blogger) audios[4].Play();
+						else if (p is Grandma) audios[5].Play();
+						else if (p is BestFriend) audios[6].Play();
 
 					}else{
 						//print ("null person");
@@ -392,7 +441,16 @@ public class Level1 : MonoBehaviour {
 		//print ("Hello");
 		List<Person> accumulator = new List<Person> ();
 		foreach (Person p in toBeActivated) {
+
+
 			if(!p.activated){
+
+				//ActivatioN SouNd
+				if(p is Normal) audios[3].Play();
+				else if (p is Blogger) audios[4].Play();
+				else if (p is Grandma) audios[5].Play();
+				else if (p is BestFriend) audios[6].Play();
+
 				//print (p.GetInstanceID());
 				partialCount++;
 				accumulator.AddRange(p.Activate());
@@ -407,6 +465,7 @@ public class Level1 : MonoBehaviour {
 			// no more cascade, stop
 			// popup?
 			started = false;
+			WinLevel();
 		} else {
 			toBeActivated = accumulator.Distinct().ToList();
 			// get rid of duplicates
@@ -422,8 +481,7 @@ public class Level1 : MonoBehaviour {
 		float curTime = Time.time;
 		if (started && curTime >= startTime+maxSec) {
 			CheckAndActivate();
-			if(started)
-				audios[3].Play();
+
 		}
 	}
 }
