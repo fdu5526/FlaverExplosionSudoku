@@ -449,7 +449,8 @@ public class Level1 : MonoBehaviour {
 			case 5:
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/DadPerson"));
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																					 2.4f, gridWidth*c-(width/2*gridWidth));
+																					 0.1f, gridWidth*c-(width/2*gridWidth));
+				g.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
 				break;
 			default:
 				break;
@@ -508,7 +509,6 @@ public class Level1 : MonoBehaviour {
 			}
 			else
 			{
-
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = false;
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = false;
 				blogTutorial.GetComponent<SpriteRenderer>().enabled = false;
