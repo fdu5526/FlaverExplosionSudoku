@@ -33,6 +33,7 @@ public class DropDown : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// make list
+		/*
 		namesToType.Add ("Normal", 1);
 		namesToType.Add ("Blogger", 2);
 		namesToType.Add ("Grandma", 3);
@@ -43,23 +44,37 @@ public class DropDown : MonoBehaviour {
 		typeToNames.Add (3, "Grandma");
 		typeToNames.Add (4, "Best Friend");
 		typeToNames.Add (5, "Dad");
+		*/
 		topButton.GetComponentInChildren<Text> ().text = "Select a Piece";
 		selection = -1;
 	}
 
-	void createButtons(){
+	public void destroyButtons(){
+		for(int i = 0; i < options.Length; i++){
+			GameObject b = nameToButtons[options[i]];
+			Destroy(b);
+		}
+		nameToButtons = new Dictionary<string, GameObject> ();
+		buttonsToName = new Dictionary<GameObject, string>();
+		inventory = new Dictionary<string, int> ();
+		nameToText = new Dictionary<string, Text> ();
+	}
+
+	public void createButtons(){
 		for(int i = 0; i < options.Length; i++){
 			GameObject button = (GameObject) Instantiate(buttonPrefab);
 			Text t = button.GetComponentInChildren<Text>();
 			nameToText.Add(options[i], t);
 			int num = inventory[options[i]];
 			button.GetComponentInChildren<Text>().text = options[i] + ": " + num;
-			int index = namesToType[options[i]];
-			button.GetComponent<Button>().onClick.AddListener(() => setSelection (index));
-			buttonsToName.Add (button, options[i]);
-			nameToButtons.Add (options[i], button);
-			//button.transform.parent = menuPanel;
-			button.transform.SetParent(menuPanel, false);
+			if(namesToType.ContainsKey(options[i])){
+				int index = namesToType[options[i]];
+				button.GetComponent<Button>().onClick.AddListener(() => setSelection (index));
+				buttonsToName.Add (button, options[i]);
+				nameToButtons.Add (options[i], button);
+				//button.transform.parent = menuPanel;
+				button.transform.SetParent(menuPanel, false);
+			}
 		}
 	}
 
