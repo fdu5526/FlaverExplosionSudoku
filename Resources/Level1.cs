@@ -158,7 +158,8 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
-		
+		// load tutorials
+		/*
 		switch(l)
 		{
 			case 1:
@@ -178,7 +179,7 @@ public class Level1 : MonoBehaviour {
 				break;
 			default:
 				break;
-		}
+		}*/
 
 		dropDownMenu.destroyButtons ();
 		string filename = "Assets/Resources/Levels/Level" + l.ToString() + ".txt";
@@ -627,7 +628,8 @@ public class Level1 : MonoBehaviour {
 
 		if(winPanel.active)
 		{
-			barPosition = new Rect(190f, 194f, barWidth*1.34f, 34f);
+			print(Screen.width);
+			barPosition = new Rect(324f, 296f, barWidth*1.38f, 42f);
 	   	texture = new Texture2D(1, 1);
 	   	
 	   	texture.SetPixel(0,0, blueColor);
