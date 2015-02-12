@@ -247,7 +247,7 @@ public class Level1 : MonoBehaviour {
 			case 1:	// normal person
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/NormalPerson"));
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																					 1f, gridWidth*c-(width/2*gridWidth));
+																					 2.4f, gridWidth*c-(width/2*gridWidth));
 				break;
 			case 2:
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/BloggerPerson"));
@@ -370,16 +370,13 @@ public class Level1 : MonoBehaviour {
 				if(gameObjectBoard[r,c] != null && !started)
 				{
 					Person p = gameObjectBoard[r,c].GetComponent<Person>();
+					gridBoard[r,c].GetComponent<Person>().Activate();
+
 					if(p != null){
 						//GameObject.FindGameObjectWithTag("normalButton").GetComponent<Text>().text = "Normal Person: 0";
 						toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
 						partialCount++;
-						// sanity check
-						foreach(Person per in toBeActivated){
-							int rg = p.GetComponent<Person>().y;
-							int cg = p.GetComponent<Person>().x;
-							gridBoard[rg,cg].GetComponent<Person>().Activate();
-						}
+
 						startTime = Time.time;
 						started = true;
 						audios[3].Play();
@@ -403,7 +400,8 @@ public class Level1 : MonoBehaviour {
 				accumulator.AddRange(p.Activate());
 				int rg = p.GetComponent<Person>().y;
 				int cg = p.GetComponent<Person>().x;
-				gridBoard[rg,cg].GetComponent<Person>().Activate();
+				if(gridBoard[rg,cg] != null)
+					gridBoard[rg,cg].GetComponent<Person>().Activate();
 			}
 
 		}

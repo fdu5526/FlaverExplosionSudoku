@@ -31,9 +31,7 @@ public class Blogger : Person {
 						break;
 					}
 					Person p = board[ct, this.x].GetComponent<Person>();
-					if(!(p is EmptySpace)){
-						toBeActivated.Add(p);
-					}
+					toBeActivated.Add(p);
 				}
 				ct++;
 			}
@@ -45,9 +43,7 @@ public class Blogger : Person {
 						break;
 					}
 					Person p = board[ct, this.x].GetComponent<Person>();
-					if(!(p is EmptySpace)){
-						toBeActivated.Add(p);
-					}
+					toBeActivated.Add(p);
 				}
 				ct--;
 			}
@@ -59,9 +55,7 @@ public class Blogger : Person {
 						break;
 					}
 					Person p = board[this.y, ct].GetComponent<Person>();
-					if(!(p is EmptySpace)){
-						toBeActivated.Add(p);
-					}
+					toBeActivated.Add(p);
 				}
 				ct++;
 			}
@@ -73,9 +67,7 @@ public class Blogger : Person {
 						break;
 					}
 					Person p = board[this.y, ct].GetComponent<Person>();
-					if(!(p is EmptySpace)){
-						toBeActivated.Add(p);
-					}
+					toBeActivated.Add(p);
 				}
 				ct--;
 			}
