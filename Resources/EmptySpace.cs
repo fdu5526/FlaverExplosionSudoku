@@ -6,19 +6,23 @@ public class EmptySpace : Person {
 
 	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
 	public bool isActuallyEmpty;
-	public bool isActivated;
-	float maxSec = 0.1f;
+	public bool isActivated, isFlashing;
+	float maxSec = 0.3f;
 	float startTime;
 
 	// Use this for initialization
 	void Start () {
 		isActivated = false;
+		isFlashing = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(isActuallyEmpty && Time.time - startTime > maxSec)
+		if(Time.time - startTime > maxSec && isFlashing)
+		{
 			gameObject.renderer.material.color = Color.white;
+			isFlashing = false;
+		}
 	}
 
 	void OnMouseOver()
@@ -43,11 +47,17 @@ public class EmptySpace : Person {
  	override public List<Person> Activate (){
  		
  		if(isActuallyEmpty)
- 			gameObject.renderer.material.color = Color.red;
+		{
+			gameObject.renderer.material.color = Color.red;
+			isFlashing = true;
+			startTime = Time.time;
+		}
 		else
+		{
 			gameObject.renderer.material.color = blueColor;
- 		isActivated = true;
- 		startTime = Time.time;
+			isActivated = true;
+		}
+ 		
 
  		return new List<Person>();
  	}
