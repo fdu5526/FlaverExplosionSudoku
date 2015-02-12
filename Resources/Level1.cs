@@ -165,40 +165,16 @@ public class Level1 : MonoBehaviour {
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
-				audios[9].Play();
-				audios[10].Stop();
-				audios[11].Stop();
 				break;
 			case 2:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				granTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
-				audios[9].Stop();
-				audios[10].Play();
-				audios[11].Stop();
-				break;
-			case 3:
-				audios[9].Stop();
-				audios[10].Stop();
-				audios[11].Play();
 				break;
 			case 4:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				bfTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
-				audios[9].Play();
-				audios[10].Stop();
-				audios[11].Stop();
-				break;
-			case 5:
-				audios[9].Stop();
-				audios[10].Play();
-				audios[11].Stop();
-				break;
-			case 6:
-				audios[9].Stop();
-				audios[10].Stop();
-				audios[11].Play();
 				break;
 			default:
 				break;
@@ -262,15 +238,21 @@ public class Level1 : MonoBehaviour {
 		winPanel.SetActive (true);
 
 		// check if player has won
-		if(percentage < 75)
+		if(percentage < 1)
 		{
 			popupContinue.interactable = false;
 			audios[7].Play();
+			audios[9].Stop();
+			audios[10].Stop();
+			audios[11].Stop();
 		}
 		else
 		{
 			popupContinue.interactable = true;
 			audios[8].Play();
+			audios[9].Stop();
+			audios[10].Stop();
+			audios[11].Stop();
 		}
 
 		popupText.text = percentage.ToString() + "%";
@@ -280,6 +262,42 @@ public class Level1 : MonoBehaviour {
 
 	void ResetPieces()
 	{
+
+		switch(curLevel)
+		{
+			case 1:
+				audios[9].Play();
+				audios[10].Stop();
+				audios[11].Stop();
+				break;
+			case 2:
+				audios[9].Stop();
+				audios[10].Play();
+				audios[11].Stop();
+				break;
+			case 3:
+				audios[9].Stop();
+				audios[10].Stop();
+				audios[11].Play();
+				break;
+			case 4:
+				audios[9].Play();
+				audios[10].Stop();
+				audios[11].Stop();
+				break;
+			case 5:
+				audios[9].Stop();
+				audios[10].Play();
+				audios[11].Stop();
+				break;
+			case 6:
+				audios[9].Stop();
+				audios[10].Stop();
+				audios[11].Play();
+				break;
+			default:
+				break;
+		}
 
 		winPanel.SetActive (false);
 		started = false;
@@ -526,6 +544,11 @@ public class Level1 : MonoBehaviour {
 				if(gameObjectBoard[r,c] != null)
 				{
 					Person p = gameObjectBoard[r,c].GetComponent<Person>();
+
+					// no activate dad
+					if(p is Dad)
+						return;
+
 					gridBoard[r,c].GetComponent<Person>().Activate();
 
 					if(p != null){
