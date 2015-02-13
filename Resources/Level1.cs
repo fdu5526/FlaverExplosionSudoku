@@ -14,6 +14,8 @@ public class Level1 : MonoBehaviour {
 	public Text popupText;
 	public Button popupReset;
 	public Button popupContinue;
+	public Sprite continueGraphicGray;
+	public Sprite continueGraphic;
 	public GameObject winPanel;
 	int totalCount, partialCount = 0;
 	private bool started, hasActivated;
@@ -32,8 +34,8 @@ public class Level1 : MonoBehaviour {
 	// for UI
 	private Rect barPosition, maxBarPosition;
 	private float barWidth;
-	private const float maxBarWidth = 195f;
-	private const float barHeight = 16f;
+	private const float maxBarWidth = 185f;
+	private const float barHeight = 17f;
 	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
 	static Color redColor = new Color(0.86f,0.21f,0.14f,1f);
 
@@ -158,23 +160,58 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
-		
 		switch(l)
 		{
 			case 1:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
+				audios[7].Stop();
+				audios[8].Stop();
+				audios[9].Play();
+				audios[10].Stop();
+				audios[11].Stop();
 				break;
 			case 2:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				granTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
+				audios[7].Stop();
+				audios[8].Stop();
+				audios[9].Stop();
+				audios[10].Play();
+				audios[11].Stop();
+				break;
+			case 3:
+				audios[7].Stop();
+				audios[8].Stop();
+				audios[9].Stop();
+				audios[10].Stop();
+				audios[11].Play();
 				break;
 			case 4:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				bfTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
+				audios[7].Stop();
+				audios[8].Stop();
+				audios[9].Play();
+				audios[10].Stop();
+				audios[11].Stop();
+				break;
+			case 5:
+				audios[7].Stop();
+				audios[8].Stop();
+				audios[9].Stop();
+				audios[10].Play();
+				audios[11].Stop();
+				break;
+			case 6:
+				audios[7].Stop();
+				audios[8].Stop();
+				audios[9].Stop();
+				audios[10].Stop();
+				audios[11].Play();
 				break;
 			default:
 				break;
@@ -241,6 +278,7 @@ public class Level1 : MonoBehaviour {
 		if(percentage < 75)
 		{
 			popupContinue.interactable = false;
+			popupContinue.image.sprite = continueGraphicGray;
 			audios[7].Play();
 			audios[9].Stop();
 			audios[10].Stop();
@@ -249,6 +287,7 @@ public class Level1 : MonoBehaviour {
 		else
 		{
 			popupContinue.interactable = true;
+			popupContinue.image.sprite = continueGraphic;
 			audios[8].Play();
 			audios[9].Stop();
 			audios[10].Stop();
@@ -410,7 +449,8 @@ public class Level1 : MonoBehaviour {
 			case 5:
 				g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/DadPerson"));
 				g.transform.position = new Vector3(gridWidth*r-(height/2*gridWidth), 
-																					 2.4f, gridWidth*c-(width/2*gridWidth));
+																					 0.1f, gridWidth*c-(width/2*gridWidth));
+				g.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
 				break;
 			default:
 				break;
@@ -469,7 +509,6 @@ public class Level1 : MonoBehaviour {
 			}
 			else
 			{
-
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = false;
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = false;
 				blogTutorial.GetComponent<SpriteRenderer>().enabled = false;
@@ -617,7 +656,7 @@ public class Level1 : MonoBehaviour {
 		if(barWidth < 10f)
   		return;
 
-	 	barPosition = new Rect(12f, 18f, barWidth, barHeight);
+	 	barPosition = new Rect(19f, 24f, barWidth, barHeight);
    	Texture2D texture = new Texture2D(1, 1);
    	texture.SetPixel(0,0, blueColor);
 		texture.Apply();
@@ -627,7 +666,8 @@ public class Level1 : MonoBehaviour {
 
 		if(winPanel.active)
 		{
-			barPosition = new Rect(190f, 194f, barWidth*1.34f, 34f);
+			print(Screen.width);
+			barPosition = new Rect(361f, 303f, barWidth, 35f);
 	   	texture = new Texture2D(1, 1);
 	   	
 	   	texture.SetPixel(0,0, blueColor);
