@@ -14,6 +14,7 @@ public class BestFriend : Person {
 
 	void Start () {
 		activated = false;
+
 	}
 
 	public void SetFriend(BestFriend p){
@@ -39,7 +40,7 @@ public class BestFriend : Person {
 				// diagonal NE (+, +)
 				int cx = this.x+1;
 				int cy = this.y+1;
-				while(cx < width && cy < height && cx < this.x + range + 1){
+				while(cx < width && cy < height && cx < this.x + range){
 					// hit a dad and break
 					if(board[cy,cx] != null){
 						if(board[cy,cx].GetComponent<Dad>() != null){
@@ -55,7 +56,7 @@ public class BestFriend : Person {
 				// diagonal SE (-, +)
 				cx = this.x+1;
 				cy = this.y-1;
-				while(cx < width && cy >= 0 && cx < this.x + range + 1){
+				while(cx < width && cy >= 0 && cx < this.x + range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -69,7 +70,7 @@ public class BestFriend : Person {
 				// diagonal SW (-, -)
 				cx = this.x-1;
 				cy = this.y-1;
-				while(cx >= 0 && cy >= 0 && cx > this.x - range - 1){
+				while(cx >= 0 && cy >= 0 && cx > this.x - range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -83,7 +84,7 @@ public class BestFriend : Person {
 				// diagonal NW (+, -)
 				cx = this.x - 1;
 				cy = this.y +1;
-				while(cx >= 0 && cy < height && cx > this.x - range - 1){
+				while(cx >= 0 && cy < height && cx > this.x - range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -107,7 +108,7 @@ public class BestFriend : Person {
 				// diagonal NE (+, +)
 				int cx = this.x+1;
 				int cy = this.y+1;
-				while(cx < width && cy < height && cx < this.x + range + 1){
+				while(cx < width && cy < height && cx < this.x + range){
 					// hit a dad and break
 					if(board[cy,cx] != null){
 						if(board[cy,cx].GetComponent<Dad>() != null){
@@ -123,7 +124,7 @@ public class BestFriend : Person {
 				// diagonal SE (-, +)
 				cx = this.x+1;
 				cy = this.y-1;
-				while(cx < width && cy >= 0 && cx < this.x + range + 1){
+				while(cx < width && cy >= 0 && cx < this.x + range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -137,7 +138,7 @@ public class BestFriend : Person {
 				// diagonal SW (-, -)
 				cx = this.x-1;
 				cy = this.y-1;
-				while(cx >= 0 && cy >= 0 && cx > this.x - range - 1){
+				while(cx >= 0 && cy >= 0 && cx > this.x - range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -151,7 +152,7 @@ public class BestFriend : Person {
 				// diagonal NW (+, -)
 				cx = this.x - 1;
 				cy = this.y +1;
-				while(cx >= 0 && cy < height && cx > this.x - range - 1){
+				while(cx >= 0 && cy < height && cx > this.x - range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -179,7 +180,13 @@ public class BestFriend : Person {
 		targets = new List<EmptySpace> ();
 		// grab best friend and its activation squares
 
+		board = GameObject.Find ("GameMaster").GetComponent<Level1> ().gameObjectBoard;
+		grid = GameObject.Find ("GameMaster").GetComponent<Level1> ().gridBoard;
+		height = GameObject.Find ("GameMaster").GetComponent<Level1> ().height;
+		width = GameObject.Find ("GameMaster").GetComponent<Level1> ().width;
+		
 		// add yourself
+		if(grid[this.y, this.x] != null)
 		targets.Add(grid[this.y, this.x].GetComponent<EmptySpace>());
 
 		if (bestFriend != null) {
@@ -189,7 +196,7 @@ public class BestFriend : Person {
 				// diagonal NE (+, +)
 				int cx = bestFriend.x+1;
 				int cy = bestFriend.y+1;
-				while(cx < width && cy < height && cx < this.x + range + 1){
+				while(cx < width && cy < height && cx < this.x + range){
 					// hit a dad and break
 					if(board[cy,cx] != null){
 						if(board[cy,cx].GetComponent<Dad>() != null){
@@ -208,7 +215,7 @@ public class BestFriend : Person {
 				// diagonal SE (-, +)
 				cx = bestFriend.x+1;
 				cy = bestFriend.y-1;
-				while(cx < width && cy >= 0 && cx < this.x + range + 1){
+				while(cx < width && cy >= 0 && cx < this.x + range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -225,7 +232,7 @@ public class BestFriend : Person {
 				// diagonal SW (-, -)
 				cx = bestFriend.x-1;
 				cy = bestFriend.y-1;
-				while(cx >= 0 && cy >= 0 && cx > this.x - range - 1){
+				while(cx >= 0 && cy >= 0 && cx > this.x - range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -242,7 +249,7 @@ public class BestFriend : Person {
 				// diagonal NW (+, -)
 				cx = bestFriend.x - 1;
 				cy = bestFriend.y +1;
-				while(cx >= 0 && cy < height && cx > this.x - range - 1){
+				while(cx >= 0 && cy < height && cx > this.x - range){
 					if(board[cy, cx] != null){
 						if(board[cy, cx].GetComponent<Dad>() != null){
 							break;
@@ -265,7 +272,7 @@ public class BestFriend : Person {
 			// diagonal NE (+, +)
 			int cx = this.x+1;
 			int cy = this.y+1;
-			while(cx < width && cy < height && cx < this.x + range + 1){
+			while(cx < width && cy < height && cx < this.x + range){
 				// hit a dad and break
 				if(board[cy,cx] != null){
 					if(board[cy,cx].GetComponent<Dad>() != null){
@@ -284,7 +291,7 @@ public class BestFriend : Person {
 			// diagonal SE (-, +)
 			cx = this.x+1;
 			cy = this.y-1;
-			while(cx < width && cy >= 0 && cx < this.x + range + 1){
+			while(cx < width && cy >= 0 && cx < this.x + range){
 				if(board[cy, cx] != null){
 					if(board[cy, cx].GetComponent<Dad>() != null){
 						break;
@@ -301,7 +308,7 @@ public class BestFriend : Person {
 			// diagonal SW (-, -)
 			cx = this.x-1;
 			cy = this.y-1;
-			while(cx >= 0 && cy >= 0 && cx > this.x - range - 1){
+			while(cx >= 0 && cy >= 0 && cx > this.x - range){
 				if(board[cy, cx] != null){
 					if(board[cy, cx].GetComponent<Dad>() != null){
 						break;
@@ -318,7 +325,7 @@ public class BestFriend : Person {
 			// diagonal NW (+, -)
 			cx = this.x - 1;
 			cy = this.y +1;
-			while(cx >= 0 && cy < height && cx > this.x - range - 1){
+			while(cx >= 0 && cy < height && cx > this.x - range){
 				if(board[cy, cx] != null){
 					if(board[cy, cx].GetComponent<Dad>() != null){
 						break;

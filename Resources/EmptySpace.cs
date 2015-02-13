@@ -76,7 +76,6 @@ public class EmptySpace : Person {
  		
  		if(isActuallyEmpty)
 		{
-			gameObject.renderer.material.color = redColor;
 			isFlashing = true;
 			startTime = Time.time;
 		}
