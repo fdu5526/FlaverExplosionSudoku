@@ -13,6 +13,8 @@ public abstract class Person : MonoBehaviour {
 		this.y = r;
 	}
 
+	public abstract void Highlight();
+	public abstract void Unhighlight();
 	public abstract List<Person> Activate ();
 	
 }

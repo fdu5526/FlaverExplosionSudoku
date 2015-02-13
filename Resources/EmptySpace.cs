@@ -32,10 +32,15 @@ public class EmptySpace : Person {
  		if(isActivated)
  			return;
 
- 		if(isActuallyEmpty)
-   		gameObject.renderer.material.color = Color.green;
-   	else
-   		gameObject.renderer.material.color = blueColor;
+ 		if (isActuallyEmpty)
+			gameObject.renderer.material.color = Color.green;
+		else {
+			gameObject.renderer.material.color = blueColor;
+			GameObject[,] board = GameObject.Find ("GameMaster").GetComponent<Level1> ().gameObjectBoard;
+			if(board[this.y, this.x] != null){
+				board[this.y, this.x].GetComponent<Person>().Highlight();
+			}
+		}
  	}
 
  	void OnMouseExit()
@@ -44,7 +49,28 @@ public class EmptySpace : Person {
  			return;
 
  		gameObject.renderer.material.color = Color.white;
+
+		if (!isActuallyEmpty) {
+			GameObject[,] board = GameObject.Find ("GameMaster").GetComponent<Level1> ().gameObjectBoard;
+			if(board[this.y, this.x] != null){
+				board[this.y, this.x].GetComponent<Person>().Unhighlight();
+			}
+		}
  	}
+
+	public void TurnOn(){
+		gameObject.renderer.material.color = blueColor;
+	}
+
+	public void TurnOff(){
+		gameObject.renderer.material.color = Color.white;
+	
+	}
+
+	override public void Highlight(){
+	}
+	override public void Unhighlight(){
+	}
 
  	override public List<Person> Activate (){
  		

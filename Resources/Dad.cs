@@ -13,4 +13,8 @@ public class Dad : Person {
 		return new List<Person> ();
 	}
 
+	override public void Highlight(){
+	}
+	override public void Unhighlight(){
+	}
 }
