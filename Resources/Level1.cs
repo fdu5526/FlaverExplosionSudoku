@@ -93,7 +93,7 @@ public class Level1 : MonoBehaviour {
 
 		audios = GetComponents<AudioSource>(); 
 
-		curLevel = 4;
+		curLevel = 1;
 		LoadLevelNumber(curLevel);
 		
 		barWidth = percentage;
