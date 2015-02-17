@@ -26,7 +26,7 @@ public class Level1 : MonoBehaviour {
 	public Dictionary <string, int> namesToType = new Dictionary<string, int>();
 	public DropDown dropDownMenu;
 	int curLevel;
-	int maxLevel = 6;
+	int maxLevel = 10;
 
 	// for tutorials
 	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit;
@@ -160,6 +160,7 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
+		// changes the music
 		switch(l)
 		{
 			case 1:
@@ -262,8 +263,8 @@ public class Level1 : MonoBehaviour {
 	   }
 	   stream.Close( );
 
-	   // after reading in data, generate the board
-	   ResetPieces();
+	  // after reading in data, generate the board
+	  ResetPieces();
 	  // GenerateOptionsAndInventory ();
 		dropDownMenu.createButtons ();
 	   
@@ -392,15 +393,8 @@ public class Level1 : MonoBehaviour {
 
 	}
 
-	void ButtonPressedSound()
-	{
-		audios[0].Play();
-	}
-
-	void PickUpPieceSound()
-	{
-		audios[1].Play();
-	}
+	void ButtonPressedSound() { audios[0].Play(); }
+	void PickUpPieceSound() { audios[1].Play(); }
 
 	void ActivateRumor(){
 		GameObject r = GameObject.FindGameObjectWithTag ("rumor");
