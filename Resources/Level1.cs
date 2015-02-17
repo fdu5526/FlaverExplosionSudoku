@@ -411,6 +411,7 @@ public class Level1 : MonoBehaviour {
 
 		GameObject g = null;
 
+
 		switch (i)
 		{
 			case 0:	// empty square
