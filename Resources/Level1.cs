@@ -160,6 +160,7 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
+		/*
 		// changes the music
 		switch(l)
 		{
@@ -216,28 +217,29 @@ public class Level1 : MonoBehaviour {
 				break;
 			default:
 				break;
-		}
+		}*/
 
 		dropDownMenu.destroyButtons ();
-		string filename = "Assets/Resources/Levels/Level" + l.ToString() + ".txt";
-		StreamReader stream = new StreamReader(filename);
+
+
+		TextAsset txt = (TextAsset)Resources.Load("Levels/Level"+l.ToString(), typeof(TextAsset));
 		bool isFirst = true;
 
 		setupBoard = new List<List<int>>();
 		setupPlayerPieces = new List<int>();
 
-		// read my text file
-	  while(!stream.EndOfStream)
-	  {
-			string line = stream.ReadLine( );
+		string[] lines = txt.text.Split('\n');
 
+		// read my text file
+	  foreach (string line in lines)
+	  {
 			// get placable pieces
    		if(isFirst)
    		{
    			// add placable pieces
    			for(int i = 0; i < line.Length; i++)
    			{
-   				if(line[i] == ' ')
+   				if(line[i] == ' ' || line[i] == '\r' || line[i] == '\n')
    					continue;
    				setupPlayerPieces.Add((int)(line[i] - '0'));
    			}
@@ -253,7 +255,7 @@ public class Level1 : MonoBehaviour {
    			// add placable pieces
    			for(int i = 0; i < line.Length; i++)
    			{
-   				if(line[i] == ' ')
+   				if(line[i] == ' ' || line[i] == '\r' || line[i] == '\n')
    					continue;
    				row.Add((int)(line[i] - '0'));
    			}
@@ -261,14 +263,12 @@ public class Level1 : MonoBehaviour {
    			setupBoard.Add(row);
    		}
 	   }
-	   stream.Close( );
+	   //stream.Close( );
 
 	  // after reading in data, generate the board
 	  ResetPieces();
 	  // GenerateOptionsAndInventory ();
-		dropDownMenu.createButtons ();
-	   
-   	
+		dropDownMenu.createButtons ();   	
 	}
 
 	// call if win
