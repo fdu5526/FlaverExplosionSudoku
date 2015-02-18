@@ -26,7 +26,7 @@ public class Level1 : MonoBehaviour {
 	public Dictionary <string, int> namesToType = new Dictionary<string, int>();
 	public DropDown dropDownMenu;
 	public int curLevel;
-	int maxLevel = 10;
+	int maxLevel = 11;
 
 	// for tutorials
 	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit;
