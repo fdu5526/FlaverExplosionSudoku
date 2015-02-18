@@ -19,7 +19,7 @@ public class DropDown : MonoBehaviour {
 
 	[SerializeField] Transform menuPanel;
 
-	[SerializeField] GameObject buttonPrefab;
+	[SerializeField] GameObject buttonPrefab; // change to toggle
 
 	AudioSource[] audios;
 
@@ -35,19 +35,7 @@ public class DropDown : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// make list
-		/*
-		namesToType.Add ("Normal", 1);
-		namesToType.Add ("Blogger", 2);
-		namesToType.Add ("Grandma", 3);
-		namesToType.Add ("Best Friend", 4);
-		namesToType.Add ("Dad", 5);
-		typeToNames.Add (1, "Normal");
-		typeToNames.Add (2, "Blogger");
-		typeToNames.Add (3, "Grandma");
-		typeToNames.Add (4, "Best Friend");
-		typeToNames.Add (5, "Dad");
-		*/
-		//topButton.GetComponentInChildren<Text> ().text = "Select a Piece";
+
 		selection = -1;
 
 		audios = GetComponents<AudioSource>(); 
@@ -70,13 +58,12 @@ public class DropDown : MonoBehaviour {
 			Text t = button.GetComponentInChildren<Text>();
 			nameToText.Add(options[i], t);
 			int num = inventory[options[i]];
-			button.GetComponentInChildren<Text>().text = options[i] + ": " + num;
+			button.GetComponentInChildren<Text>().text = num.ToString();
 			if(namesToType.ContainsKey(options[i])){
 				int index = namesToType[options[i]];
 				button.GetComponent<Button>().onClick.AddListener(() => setSelection (index));
 				buttonsToName.Add (button, options[i]);
 				nameToButtons.Add (options[i], button);
-				//button.transform.parent = menuPanel;
 				button.transform.SetParent(menuPanel, false);
 			}
 		}
@@ -115,15 +102,8 @@ public class DropDown : MonoBehaviour {
 			inventory[name]--;	// check this
 			Text button = nameToText[name];
 			int num = inventory[name];
-			button.text = name + ": " + num;
-			//print (button.GetComponentInChildren<Text>() != null);
-			//print (name);
-			//if(button != null){
-			//	int num = inventory[name];
-				//print (num);
-				//print (button.GetComponentInChildren<Text>() != null);
-				//button.GetComponentInChildren<Text>().text = name + ": " + num;
-			//}
+			button.text = name + ": " +num;
+			
 		}
 
 
@@ -134,7 +114,7 @@ public class DropDown : MonoBehaviour {
 		audios[0].Play();
 		selection = s;
 		string name = typeToNames[s];
-		topButton.GetComponentInChildren<Text>().text = name + " " + inventory[name];
+		//topButton.GetComponentInChildren<Text>().text = name + " " + inventory[name];
 
 	}
 
