@@ -17,7 +17,7 @@ public class Level1 : MonoBehaviour {
 	public Sprite continueGraphicGray;
 	public Sprite continueGraphic;
 	public GameObject winPanel;
-	int totalCount, partialCount = 0;
+	int totalCount;
 	private bool started, hasActivated;
 	List<Person> toBeActivated;
 	float startTime;
@@ -51,15 +51,17 @@ public class Level1 : MonoBehaviour {
 	List<List<int>> setupBoard;
 	List<int> setupPlayerPieces;
 
-	
+	// all
 	public GameObject[,] gameObjectBoard;
 	public GameObject[,] gridBoard;
 	List<int> playerPieces;
 	public int currentPlayerPieceIndex = 0;
 
+	// size o the board
 	public int height, width;
 	float gridWidth;
 
+	// all the audio
 	AudioSource[] audios;
 
 
@@ -113,6 +115,8 @@ public class Level1 : MonoBehaviour {
 		dropDownMenu.options = count.Keys.ToArray ();
 	}
 
+
+	// load the next level, or the credits
 	void LoadNext(){
 		winPanel.SetActive (false);
 		if (curLevel == maxLevel) {
@@ -161,28 +165,18 @@ public class Level1 : MonoBehaviour {
 	void LoadLevelNumber(int l)
 	{
 		/*
-		// changes the music
+		// changes the tutorial
 		switch(l)
 		{
 			case 1:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
-				audios[7].Stop();
-				audios[8].Stop();
-				audios[9].Play();
-				audios[10].Stop();
-				audios[11].Stop();
 				break;
 			case 2:
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				granTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
-				audios[7].Stop();
-				audios[8].Stop();
-				audios[9].Stop();
-				audios[10].Play();
-				audios[11].Stop();
 				break;
 			case 3:
 				audios[7].Stop();
@@ -195,25 +189,6 @@ public class Level1 : MonoBehaviour {
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
 				bfTutorial.GetComponent<SpriteRenderer>().enabled = true;
 				canvas.GetComponent<Canvas>().enabled = false;
-				audios[7].Stop();
-				audios[8].Stop();
-				audios[9].Play();
-				audios[10].Stop();
-				audios[11].Stop();
-				break;
-			case 5:
-				audios[7].Stop();
-				audios[8].Stop();
-				audios[9].Stop();
-				audios[10].Play();
-				audios[11].Stop();
-				break;
-			case 6:
-				audios[7].Stop();
-				audios[8].Stop();
-				audios[9].Stop();
-				audios[10].Stop();
-				audios[11].Play();
 				break;
 			default:
 				break;
@@ -300,9 +275,10 @@ public class Level1 : MonoBehaviour {
 	}
 
 
-	void ResetPieces()
+	void LevelMusicPlayer()
 	{
-
+		audios[7].Stop();
+		audios[8].Stop();
 		switch(curLevel)
 		{
 			case 1:
@@ -338,6 +314,13 @@ public class Level1 : MonoBehaviour {
 			default:
 				break;
 		}
+	}
+
+
+	void ResetPieces()
+	{
+		// play different music based on level
+		LevelMusicPlayer();
 
 		winPanel.SetActive (false);
 		started = false;
@@ -383,7 +366,6 @@ public class Level1 : MonoBehaviour {
 			for(int r = 0; r < height; r++)
 			{
 				AddPieceToBoard(setupBoard[r][c], r, c);
-				totalCount++;
 			}
 
 		}
@@ -466,16 +448,20 @@ public class Level1 : MonoBehaviour {
 				b.transform.localScale = new Vector3(0.95f*gridWidth, 1f, 0.95f*gridWidth);
 				b.GetComponent<EmptySpace>().isActuallyEmpty = false;
 				gridBoard[r,c] = b;
+				totalCount++;
 			}
 		}
 
 	}
 
+
+	// calculate percentage of completion
 	void CalculatePercentage(){
 		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
 		int c = 0;
 		int total = persons.Length;
 
+		// count up the people
 		foreach (GameObject p in persons) {
 			if(p.GetComponent<Person>().activated){
 				c++;
@@ -483,19 +469,24 @@ public class Level1 : MonoBehaviour {
 		}
 		float percent = ((float)c / (float)total) * 100f;
 		percentage = (int)percent;
-		percentageComplete.text = (int)percent + "%";
+		percentageComplete.text = percentage + "%";
 	}
+
+
+
 
 	// player clicked somewhere, figure out what to do
 	void CheckClick()
 	{
-
+		// it is tutorial, move past it
 		if(Input.GetMouseButtonDown(0) && whiteBackground.GetComponent<SpriteRenderer>().enabled)
 		{
+			// if credit is showing, then end the game
 			if(credit.GetComponent<SpriteRenderer>().enabled)
 			{
 				EndGame();
 			}
+			// the first tutorial
 			else if(normalTutorial.GetComponent<SpriteRenderer>().enabled)
 			{
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = false;
@@ -503,6 +494,7 @@ public class Level1 : MonoBehaviour {
 			}
 			else
 			{
+				// hide all tutorial things
 				whiteBackground.GetComponent<SpriteRenderer>().enabled = false;
 				normalTutorial.GetComponent<SpriteRenderer>().enabled = false;
 				blogTutorial.GetComponent<SpriteRenderer>().enabled = false;
@@ -513,18 +505,7 @@ public class Level1 : MonoBehaviour {
 			return;
 		}
 
-
-
 		// update percentage covered, done quickly
-		GameObject[] persons = GameObject.FindGameObjectsWithTag ("person");
-
-		/*float percent = 0f;
-
-		if (totalCount > 0) {
-			percent = ((float)partialCount/(float)totalCount) * 100f;
-		} 
-
-		percentageComplete.text = "Percent Covered: " + (int)percent + "%";*/
 		CalculatePercentage ();
 
 
@@ -532,6 +513,7 @@ public class Level1 : MonoBehaviour {
 		if(hasActivated)
 			return;
 
+		// calculate which piece the player clicked
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
@@ -544,25 +526,22 @@ public class Level1 : MonoBehaviour {
 			if(hit.collider.tag.Equals("emptySpace") && gridBoard[r,c] == null)
 			{
 
-				// from the current selection determine the current type of piece to place
-				// and if you have more than 0 of it to place
+				// place the selected piece
 				currentPlayerPieceIndex = playerPieces.IndexOf(dropDownMenu.selection);
-				//print (dropDownMenu.selection);
-				//print (currentPlayerPieceIndex);
 
 				if(playerPieces.Count != 0 && currentPlayerPieceIndex != -1)
 				{
-
 					// get and remove player's piece
 					int currentPiece = playerPieces[currentPlayerPieceIndex];
 					playerPieces.RemoveAt(currentPlayerPieceIndex);
-					totalCount++;
 
 					// change text on buttons
 					dropDownMenu.buttonCount();
 
+					// add the new piece to board
 					AddPieceToBoard(currentPiece, r, c);
 
+					// destroy the old white space
 					Destroy(hit.collider);
 					Destroy(hit.transform.gameObject);
 
@@ -573,58 +552,61 @@ public class Level1 : MonoBehaviour {
 			// activate piece
 			else
 			{
-
 				if(gameObjectBoard[r,c] != null)
 				{
 					Person p = gameObjectBoard[r,c].GetComponent<Person>();
+
+					// no activate no pieces
+					if(p == null)
+						return;
+
+					// flash the white space
+					gridBoard[r,c].GetComponent<Person>().Activate();
 
 					// no activate dad
 					if(p is Dad)
 						return;
 
-					gridBoard[r,c].GetComponent<Person>().Activate();
+					// get everything else to be actiavted
+					toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
 
-					if(p != null){
-						//GameObject.FindGameObjectWithTag("normalButton").GetComponent<Text>().text = "Normal Person: 0";
-						toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
-						partialCount++;
+					// restart timer, start the activation chain reaction
+					startTime = Time.time;
+					started = true;
+					hasActivated = true;
 
-						startTime = Time.time;
-						started = true;
-						hasActivated = true;
-
-						//play first piece
-						if(p is Normal) audios[3].Play();
-						else if (p is Blogger) audios[4].Play();
-						else if (p is Grandma) audios[5].Play();
-						else if (p is BestFriend) audios[6].Play();
-
-					}else{
-						//print ("null person");
-					}
+					//play appropriate sound effect for the activated piece
+					PlayPieceSound(p);
 				}
 			}
 		}
 	}
 
+	// Play the sound to appropriate piece type
+	void PlayPieceSound(Person p)
+	{
+		if(p is Normal) audios[3].Play();
+		else if (p is Blogger) audios[4].Play();
+		else if (p is Grandma) audios[5].Play();
+		else if (p is BestFriend) audios[6].Play();
+	}
 
+
+	// take one step in the next activation wave
 	void CheckAndActivate(){
 		//print ("Hello");
 		List<Person> accumulator = new List<Person> ();
 		foreach (Person p in toBeActivated) {
 
-
 			if(!p.activated){
 
 				//ActivatioN SouNd
-				if(p is Normal) audios[3].Play();
-				else if (p is Blogger) audios[4].Play();
-				else if (p is Grandma) audios[5].Play();
-				else if (p is BestFriend) audios[6].Play();
+				PlayPieceSound(p);
 
-				//print (p.GetInstanceID());
-				partialCount++;
+				// get everyone this piece activates
 				accumulator.AddRange(p.Activate());
+
+				// activates the piece where this piece is located at
 				int rg = p.GetComponent<Person>().y;
 				int cg = p.GetComponent<Person>().x;
 				if(gridBoard[rg,cg] != null)
@@ -632,19 +614,23 @@ public class Level1 : MonoBehaviour {
 			}
 
 		}
-		if (accumulator.Count == 0) {
-			// no more cascade, stop
-			// popup?
+		// no more cascade, stop
+		if (accumulator.Count == 0) 
+		{
 			started = false;
 			WinLevel();
-		} else {
-			toBeActivated = accumulator.Distinct().ToList();
+		} 
+		else 
+		{
 			// get rid of duplicates
+			toBeActivated = accumulator.Distinct().ToList();
 		}
+
+		// reset activation timer
 		startTime = Time.time;
 	}
 
-
+	// draw the percent bar on top left, and center when we win level
   void DrawPercentBar() 
   {
 		if(barWidth < 10f)
@@ -657,7 +643,7 @@ public class Level1 : MonoBehaviour {
 		GUI.skin.box.normal.background = texture;
 		GUI.Box(barPosition, GUIContent.none);
 
-
+		// if the win panel popped up
 		if(winPanel.active)
 		{
 			print(Screen.width);
@@ -671,9 +657,10 @@ public class Level1 : MonoBehaviour {
 		}
  	}
 
-
+ 	// draw the GUI
   void OnGUI()
   {
+  	// if tutorial is active, do not show GUI
   	if(whiteBackground.GetComponent<SpriteRenderer>().enabled)
   		return;
 
@@ -688,11 +675,13 @@ public class Level1 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		// check if player clicked
 		CheckClick();
-		float curTime = Time.time;
-		if (started && curTime >= startTime+maxSec) {
-			CheckAndActivate();
 
+		// if activated, activate in waves on a timer
+		if (started && Time.time >= startTime+maxSec) 
+		{
+			CheckAndActivate();
 		}
 	}
 }
