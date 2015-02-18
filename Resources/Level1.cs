@@ -55,7 +55,7 @@ public class Level1 : MonoBehaviour {
 	public GameObject[,] gameObjectBoard;
 	public GameObject[,] gridBoard;
 	List<int> playerPieces;
-	int currentPlayerPieceIndex = 0;
+	public int currentPlayerPieceIndex = 0;
 
 	public int height, width;
 	float gridWidth;
