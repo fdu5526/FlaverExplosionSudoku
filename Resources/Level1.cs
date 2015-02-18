@@ -25,7 +25,7 @@ public class Level1 : MonoBehaviour {
 	public Dictionary <int, string> typeToNames = new Dictionary<int, string>();
 	public Dictionary <string, int> namesToType = new Dictionary<string, int>();
 	public DropDown dropDownMenu;
-	int curLevel;
+	public int curLevel;
 	int maxLevel = 10;
 
 	// for tutorials
