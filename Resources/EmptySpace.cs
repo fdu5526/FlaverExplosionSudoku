@@ -101,7 +101,6 @@ public class EmptySpace : Person {
 		
 		//targets.Add(board[this.y, this.x].GetComponent<EmptySpace>());
 		this.TurnOn();
-		print (currentSelect);
 		
 		switch (currentSelect) 
 		{

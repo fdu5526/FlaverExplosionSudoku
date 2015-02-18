@@ -188,8 +188,6 @@ public class Normal : Person {
 			
 		}
 
-		//print (targets.Count);
-
 		foreach (EmptySpace e in targets) {
 			e.TurnOn();
 		}

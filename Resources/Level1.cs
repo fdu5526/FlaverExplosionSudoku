@@ -593,8 +593,9 @@ public class Level1 : MonoBehaviour {
 
 
 	// take one step in the next activation wave
-	void CheckAndActivate(){
-		//print ("Hello");
+	void CheckAndActivate()
+	{
+
 		List<Person> accumulator = new List<Person> ();
 		foreach (Person p in toBeActivated) {
 
@@ -646,7 +647,6 @@ public class Level1 : MonoBehaviour {
 		// if the win panel popped up
 		if(winPanel.active)
 		{
-			print(Screen.width);
 			barPosition = new Rect(361f, 303f, barWidth, 35f);
 	   	texture = new Texture2D(1, 1);
 	   	
