@@ -641,10 +641,7 @@ public class Level1 : MonoBehaviour {
 		}
 
 		// update the progress bar
-		if(percentage > 0f)
-		{
-			barInside.GetComponent<RectTransform>().localScale = new Vector3(percentage/100f, 1f, 1f);
-			bar2Inside.GetComponent<RectTransform>().localScale = new Vector3(percentage/100f, 1f, 1f);
-		}
+		barInside.GetComponent<RectTransform>().localScale = new Vector3(percentage/100f, 1f, 1f);
+		bar2Inside.GetComponent<RectTransform>().localScale = new Vector3(percentage/100f, 1f, 1f);
 	}
 }
