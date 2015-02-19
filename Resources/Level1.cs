@@ -96,7 +96,7 @@ public class Level1 : MonoBehaviour {
 		LoadLevelNumber(curLevel);
 
 		bar2Inside = canvas.transform.Find("WinPopup/bar2Inside").gameObject;
-		barInside = canvas.transform.Find("WinPopup/barInside").gameObject;
+		barInside = canvas.transform.Find("barInside").gameObject;
 	}
 
 	void GenerateOptionsAndInventory(){
