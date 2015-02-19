@@ -466,7 +466,7 @@ public class Level1 : MonoBehaviour {
 			}
 		}
 		percentage = ((float)c / (float)total) * 100f;
-		percentageComplete.text = percentage + "%";
+		percentageComplete.text = ((int)percentage) + "%";
 	}
 
 

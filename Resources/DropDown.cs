@@ -18,6 +18,8 @@ public class DropDown : MonoBehaviour {
 	public Button topButton;
 
 	[SerializeField] Transform menuPanel;
+	
+	ToggleGroup toggles;
 
 	[SerializeField] GameObject buttonPrefab; // change to toggle
 
@@ -35,13 +37,13 @@ public class DropDown : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		// make list
-
 		selection = -1;
-
+		//toggles = menuPanel.GetComponent<ToggleGroup>();
 		audios = GetComponents<AudioSource>(); 
 	}
 
 	public void destroyButtons(){
+		selection = -1;
 		for(int i = 0; i < options.Length; i++){
 			GameObject b = nameToButtons[options[i]];
 			Destroy(b);
@@ -79,6 +81,9 @@ public class DropDown : MonoBehaviour {
 		{
 			string name = typeToNames[selection];
 			topButton.GetComponentInChildren<Text>().text = name + " " + inventory[name];
+			if(inventory[name] <= 0){
+				selection = -1;
+			}
 		}
 	}
 
@@ -102,7 +107,7 @@ public class DropDown : MonoBehaviour {
 			inventory[name]--;	// check this
 			Text button = nameToText[name];
 			int num = inventory[name];
-			button.text = name + ": " +num;
+			button.text = num.ToString();
 			
 		}
 
