@@ -10,7 +10,7 @@ using System.IO;
 public class Level1 : MonoBehaviour {
 
 	public Text percentageComplete;
-	public int percentage = 0;
+	public float percentage = 0f;
 	public Text popupText;
 	public Button popupReset;
 	public Button popupContinue;
@@ -30,12 +30,9 @@ public class Level1 : MonoBehaviour {
 
 	// for tutorials
 	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit;
+	GameObject barInside, bar2Inside;
 
 	// for UI
-	private Rect barPosition, maxBarPosition;
-	private float barWidth;
-	private const float maxBarWidth = 185f;
-	private const float barHeight = 17f;
 	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
 	static Color redColor = new Color(0.86f,0.21f,0.14f,1f);
 
@@ -97,8 +94,9 @@ public class Level1 : MonoBehaviour {
 
 		curLevel = 1;
 		LoadLevelNumber(curLevel);
-		
-		barWidth = percentage;
+
+		bar2Inside = canvas.transform.Find("WinPopup/bar2Inside").gameObject;
+		barInside = canvas.transform.Find("barInside").gameObject;
 	}
 
 	void GenerateOptionsAndInventory(){
@@ -251,7 +249,7 @@ public class Level1 : MonoBehaviour {
 		winPanel.SetActive (true);
 
 		// check if player has won
-		if(percentage < 75)
+		if(percentage < 75f)
 		{
 			popupContinue.interactable = false;
 			popupContinue.image.sprite = continueGraphicGray;
@@ -270,7 +268,7 @@ public class Level1 : MonoBehaviour {
 			audios[11].Stop();
 		}
 
-		popupText.text = percentage.ToString() + "%";
+		popupText.text = ((int)percentage).ToString() + "%";
 	
 	}
 
@@ -467,9 +465,8 @@ public class Level1 : MonoBehaviour {
 				c++;
 			}
 		}
-		float percent = ((float)c / (float)total) * 100f;
-		percentage = (int)percent;
-		percentageComplete.text = percentage + "%";
+		percentage = ((float)c / (float)total) * 100f;
+		percentageComplete.text = ((int)percentage) + "%";
 	}
 
 
@@ -631,47 +628,6 @@ public class Level1 : MonoBehaviour {
 		startTime = Time.time;
 	}
 
-	// draw the percent bar on top left, and center when we win level
-  void DrawPercentBar() 
-  {
-		if(barWidth < 10f)
-  		return;
-
-	 	barPosition = new Rect(19f, 24f, barWidth, barHeight);
-   	Texture2D texture = new Texture2D(1, 1);
-   	texture.SetPixel(0,0, blueColor);
-		texture.Apply();
-		GUI.skin.box.normal.background = texture;
-		GUI.Box(barPosition, GUIContent.none);
-
-		// if the win panel popped up
-		if(winPanel.active)
-		{
-			barPosition = new Rect(361f, 303f, barWidth, 35f);
-	   	texture = new Texture2D(1, 1);
-	   	
-	   	texture.SetPixel(0,0, blueColor);
-			texture.Apply();
-			GUI.skin.box.normal.background = texture;
-			GUI.Box(barPosition, GUIContent.none);
-		}
- 	}
-
- 	// draw the GUI
-  void OnGUI()
-  {
-  	// if tutorial is active, do not show GUI
-  	if(whiteBackground.GetComponent<SpriteRenderer>().enabled)
-  		return;
-
-  	barWidth = maxBarWidth * percentage / 100f;
-  	DrawPercentBar();
-
-   	//GUI.DrawTexture(outlinePosition, bar, ScaleMode.ScaleToFit, true, 10.0F);
-    
-  }
-
-	
 	// Update is called once per frame
 	void Update () 
 	{
@@ -683,5 +639,9 @@ public class Level1 : MonoBehaviour {
 		{
 			CheckAndActivate();
 		}
+
+		// update the progress bar
+		barInside.GetComponent<RectTransform>().localScale = new Vector3(percentage/100f, 1f, 1f);
+		bar2Inside.GetComponent<RectTransform>().localScale = new Vector3(percentage/100f, 1f, 1f);
 	}
 }
