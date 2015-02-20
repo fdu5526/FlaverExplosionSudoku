@@ -486,9 +486,37 @@ public class Level1 : MonoBehaviour {
 	// puts back a piece the player placed, if the piece is placed
 	void PutBackPiece()
 	{
-		if(gameObjectBoard[selectedRow,selectedCol].GetComponent<Person>().isPlaced)
+		GameObject g = gameObjectBoard[selectedRow,selectedCol];
+		if(g.GetComponent<Person>().isPlaced)
 		{
-			//TODO
+			Person p = g.GetComponent<Person>();
+			
+			
+			int pieceType = -1;
+			if(p is Blogger)
+				pieceType = 2;
+			else if(p is Grandma)
+				pieceType = 3;
+			else if(p is BestFriend)
+				pieceType = 4;
+
+			if(pieceType == -1)
+				return;
+
+			playerPieces.Add(pieceType);
+			dropDownMenu.AddOneType(pieceType);
+
+			// remove the piece from the board
+			Destroy(g);
+			Destroy(gridBoard[selectedRow, selectedCol]);
+
+			// add a white space
+			AddPieceToBoard(0, selectedRow, selectedCol);
+				
+			// turn off the menu
+			TurnOffPieceMenu();
+
+			audios[2].Play();
 		}
 	}
 
@@ -581,18 +609,20 @@ public class Level1 : MonoBehaviour {
 			else
 			{
 				gridBoard[r,c].GetComponent<Person>().Highlight();
+				
 				Vector3 p = hit.transform.position;
 				if(hit.collider.tag.Equals("emptySpace"))
 				{
 					p = gameObjectBoard[r,c].transform.position;
 				}
+				pieceMenu.GetComponent<RectTransform>().position = (Vector2)Camera.main.WorldToScreenPoint(p) + new Vector2(0f, 50f);
 
 				pieceMenu.SetActive(true);
 				selectedRow = r;
 				selectedCol = c;
 
-				pieceMenu.GetComponent<RectTransform>().position = (Vector2)Camera.main.WorldToScreenPoint(p) + new Vector2(0f, 50f);
-				
+				bool canPutBack = gameObjectBoard[r,c].GetComponent<Person>().isPlaced;
+				pieceMenu.transform.Find("Put Back").gameObject.GetComponent<Button>().interactable = canPutBack;
 			}
 		}
 	}

@@ -149,8 +149,16 @@ public class DropDown : MonoBehaviour {
 			button.text = num.ToString();
 			
 		}
+	}
 
-
+	// add a piece of type to inventory
+	public void AddOneType(int t)
+	{
+		string name = typeToNames [t];
+		inventory[name]++;	// check this
+		Text button = nameToText[name];
+		int num = inventory[name];
+		button.text = num.ToString();
 	}
 
 	void setSelection(bool on, int s){
