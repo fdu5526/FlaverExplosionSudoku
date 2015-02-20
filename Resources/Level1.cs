@@ -29,8 +29,10 @@ public class Level1 : MonoBehaviour {
 	int maxLevel = 11;
 
 	// for tutorials
-	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit;
+	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit, pieceMenu;
 	GameObject barInside, bar2Inside;
+
+	int selectedRow, selectedCol;
 
 	// for UI
 	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
@@ -89,14 +91,14 @@ public class Level1 : MonoBehaviour {
 		bfTutorial = GameObject.Find ("bfTutorial");
 		canvas = GameObject.Find ("Canvas");
 		credit = GameObject.Find ("credit");
+		pieceMenu = canvas.transform.Find("PieceMenu").gameObject;
+		bar2Inside = canvas.transform.Find("WinPopup/bar2Inside").gameObject;
+		barInside = canvas.transform.Find("barInside").gameObject;
 
 		audios = GetComponents<AudioSource>(); 
 
 		curLevel = 1;
 		LoadLevelNumber(curLevel);
-
-		bar2Inside = canvas.transform.Find("WinPopup/bar2Inside").gameObject;
-		barInside = canvas.transform.Find("barInside").gameObject;
 	}
 
 	void GenerateOptionsAndInventory(){
@@ -133,23 +135,14 @@ public class Level1 : MonoBehaviour {
 
 	void SetupUI()
 	{
-		Button quitButton = GameObject.Find ("Quit").GetComponent<Button>();
 		Button resetButton = GameObject.Find ("Clear").GetComponent<Button>();
-		//Button startButton = GameObject.Find ("Activate").GetComponent<Button>();
 
-		//startButton.onClick.AddListener (ActivateRumor);
-		quitButton.onClick.AddListener (EndGame);
-		quitButton.onClick.AddListener (ButtonPressedSound);
 		resetButton.onClick.AddListener (ResetPieces);
 		resetButton.onClick.AddListener (ButtonPressedSound);
-
 		popupReset.onClick.AddListener (ResetPieces);
 		popupReset.onClick.AddListener (ButtonPressedSound);
 		popupContinue.onClick.AddListener (LoadNext);
 		popupContinue.onClick.AddListener (ButtonPressedSound);
-
-		//GenerateOptionsAndInventory ();
-		//dropDownMenu.createButtons ();
 
 	}
 
@@ -162,36 +155,6 @@ public class Level1 : MonoBehaviour {
 
 	void LoadLevelNumber(int l)
 	{
-		/*
-		// changes the tutorial
-		switch(l)
-		{
-			case 1:
-				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
-				normalTutorial.GetComponent<SpriteRenderer>().enabled = true;
-				canvas.GetComponent<Canvas>().enabled = false;
-				break;
-			case 2:
-				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
-				granTutorial.GetComponent<SpriteRenderer>().enabled = true;
-				canvas.GetComponent<Canvas>().enabled = false;
-				break;
-			case 3:
-				audios[7].Stop();
-				audios[8].Stop();
-				audios[9].Stop();
-				audios[10].Stop();
-				audios[11].Play();
-				break;
-			case 4:
-				whiteBackground.GetComponent<SpriteRenderer>().enabled = true;
-				bfTutorial.GetComponent<SpriteRenderer>().enabled = true;
-				canvas.GetComponent<Canvas>().enabled = false;
-				break;
-			default:
-				break;
-		}*/
-
 		dropDownMenu.destroyButtons ();
 
 
@@ -236,12 +199,29 @@ public class Level1 : MonoBehaviour {
    			setupBoard.Add(row);
    		}
 	   }
-	   //stream.Close( );
 
 	  // after reading in data, generate the board
 	  ResetPieces();
-	  // GenerateOptionsAndInventory ();
 		dropDownMenu.createButtons ();   	
+	}
+
+	// play the currect victory song
+	void PlayWinJungle(bool didWin)
+	{
+		if(didWin)
+		{
+			audios[7].Stop();
+			audios[8].Play();
+		}
+		else
+		{
+			audios[7].Play();
+			audios[8].Stop();
+		}
+		audios[9].Stop();
+		audios[10].Stop();
+		audios[11].Stop();
+
 	}
 
 	// call if win
@@ -253,20 +233,15 @@ public class Level1 : MonoBehaviour {
 		{
 			popupContinue.interactable = false;
 			popupContinue.image.sprite = continueGraphicGray;
-			audios[7].Play();
-			audios[9].Stop();
-			audios[10].Stop();
-			audios[11].Stop();
+			//PlayWinJungle(false);TODO
 		}
 		else
 		{
 			popupContinue.interactable = true;
 			popupContinue.image.sprite = continueGraphic;
-			audios[8].Play();
-			audios[9].Stop();
-			audios[10].Stop();
-			audios[11].Stop();
+			//PlayWinJungle(true);TODO
 		}
+
 
 		popupText.text = ((int)percentage).ToString() + "%";
 	
@@ -318,7 +293,7 @@ public class Level1 : MonoBehaviour {
 	void ResetPieces()
 	{
 		// play different music based on level
-		LevelMusicPlayer();
+		//LevelMusicPlayer();TODO
 
 		winPanel.SetActive (false);
 		started = false;
@@ -347,11 +322,6 @@ public class Level1 : MonoBehaviour {
 			gridBoard = null;
 		}
 		playerPieces = null;
-
-
-		dropDownMenu.inventory["Blogger"] = 1;
-		dropDownMenu.inventory ["Grandma"] = 1;
-		//dropDownMenu.resetButtons ();
 		
 		// make the board		
 		gameObjectBoard = new GameObject[height, width];
@@ -471,6 +441,47 @@ public class Level1 : MonoBehaviour {
 
 
 
+	void ActivatePiece()
+	{
+		int r = selectedRow;
+		int c = selectedCol;
+
+		if(gameObjectBoard[r,c] != null)
+		{
+			Person p = gameObjectBoard[r,c].GetComponent<Person>();
+
+			// no activate no pieces
+			if(p == null)
+				return;
+
+			// flash the white space
+			gridBoard[r,c].GetComponent<Person>().Activate();
+
+			// no activate dad
+			if(p is Dad)
+				return;
+
+			// get everything else to be actiavted
+			toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
+
+			// restart timer, start the activation chain reaction
+			startTime = Time.time;
+			started = true;
+			hasActivated = true;
+
+			//play appropriate sound effect for the activated piece
+			PlayPieceSound(p);
+		}
+	}
+
+	// when player clicks away, turn off the piece menu
+	void TurnOffPieceMenu()
+	{
+		if(gridBoard[selectedRow,selectedCol] != null)
+			gridBoard[selectedRow,selectedCol].GetComponent<Person>().Unhighlight();
+		pieceMenu.SetActive(false);
+	}
+
 
 	// player clicked somewhere, figure out what to do
 	void CheckClick()
@@ -515,6 +526,7 @@ public class Level1 : MonoBehaviour {
 		RaycastHit hit;
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
 		{
+
 			// calculate this piece's index
 			int r = hit.transform.gameObject.GetComponent<Person>().y;
 			int c = hit.transform.gameObject.GetComponent<Person>().x;
@@ -545,37 +557,23 @@ public class Level1 : MonoBehaviour {
 					audios[2].Play();
 				}
 
+				TurnOffPieceMenu();
+
 			}
 			// activate piece
 			else
 			{
-				if(gameObjectBoard[r,c] != null)
-				{
-					Person p = gameObjectBoard[r,c].GetComponent<Person>();
+				gridBoard[r,c].GetComponent<Person>().Highlight();
+				pieceMenu.SetActive(true);
+				//TODO
 
-					// no activate no pieces
-					if(p == null)
-						return;
-
-					// flash the white space
-					gridBoard[r,c].GetComponent<Person>().Activate();
-
-					// no activate dad
-					if(p is Dad)
-						return;
-
-					// get everything else to be actiavted
-					toBeActivated = gameObjectBoard[r,c].GetComponent<Person>().Activate();
-
-					// restart timer, start the activation chain reaction
-					startTime = Time.time;
-					started = true;
-					hasActivated = true;
-
-					//play appropriate sound effect for the activated piece
-					PlayPieceSound(p);
-				}
+				pieceMenu.GetComponent<RectTransform>().position = (Vector2)Camera.main.WorldToScreenPoint(hit.transform.position) + new Vector2(0f, 100f);
+				
 			}
+		}
+		else if(Input.GetMouseButtonDown(0))
+		{
+			TurnOffPieceMenu();
 		}
 	}
 
