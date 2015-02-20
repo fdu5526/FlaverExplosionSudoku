@@ -189,7 +189,6 @@ public class BestFriend : Person {
 		if(grid[this.y, this.x] != null)
 		targets.Add(grid[this.y, this.x].GetComponent<EmptySpace>());
 
-		/*
 		if (bestFriend != null) {
 			targets.Add(grid[bestFriend.y, bestFriend.x].GetComponent<EmptySpace>());
 			if (bestFriend.x != null && bestFriend.y != null) {
@@ -265,8 +264,7 @@ public class BestFriend : Person {
 					cy++;
 				}
 			}
-		}*/
-		
+		}
 		// grab your own
 		if (this.x != null && this.y != null) {
 			// too tired to be clever about this

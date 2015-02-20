@@ -97,7 +97,7 @@ public class Level1 : MonoBehaviour {
 
 		audios = GetComponents<AudioSource>(); 
 
-		curLevel = 7;
+		curLevel = 1;
 		LoadLevelNumber(curLevel);
 	}
 
