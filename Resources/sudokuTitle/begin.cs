@@ -11,16 +11,6 @@ public class begin : MonoBehaviour {
 
 	}
 
-	void OnMouseEnter()
-	{
-		gameObject.GetComponent<SpriteRenderer>().sprite = Activate;
-	}
-
-	void OnMouseExit()
-	{
-		gameObject.GetComponent<SpriteRenderer>().sprite = deActivate;
-	}
-
 	void OnMouseDown(){
 		Application.LoadLevel ("Level1");
 	}
