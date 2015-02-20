@@ -74,7 +74,10 @@ public class DropDown : MonoBehaviour {
 				button.GetComponent<Toggle>().onValueChanged.AddListener((value) => setSelection (value, index));
 				button.GetComponent<Toggle>().isOn = false;
 				button.GetComponent<Toggle>().group = toggles;
-				toggles.RegisterToggle(button.GetComponent<Toggle>());
+
+
+				if(toggles != null)
+					toggles.RegisterToggle(button.GetComponent<Toggle>());
 				
 				Image unlit = button.transform.Find("Background/Top").GetComponent<Image>();
 				Image lit = button.transform.Find("Background/Checkmark").GetComponent<Image>();

@@ -31,8 +31,7 @@ public class Level1 : MonoBehaviour {
 	// for tutorials
 	GameObject whiteBackground, normalTutorial, blogTutorial, granTutorial, bfTutorial, canvas, credit, pieceMenu;
 	GameObject barInside, bar2Inside;
-
-	int selectedRow, selectedCol;
+	public int selectedRow, selectedCol;
 
 	// for UI
 	static Color blueColor = new Color(0.54f,0.61f,0.76f,1f);
@@ -68,6 +67,17 @@ public class Level1 : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{	
+		whiteBackground = GameObject.Find ("white");
+		normalTutorial = GameObject.Find ("normalTutorial");
+		blogTutorial = GameObject.Find ("blogTutorial");
+		granTutorial = GameObject.Find ("granTutorial");
+		bfTutorial = GameObject.Find ("bfTutorial");
+		canvas = GameObject.Find ("Canvas");
+		credit = GameObject.Find ("credit");
+		pieceMenu = canvas.transform.Find("PieceMenu").gameObject;
+		bar2Inside = canvas.transform.Find("WinPopup/bar2Inside").gameObject;
+		barInside = canvas.transform.Find("barInside").gameObject;
+
 		SetupUI ();
 
 		namesToType.Add ("EmptySpace", 0);
@@ -84,20 +94,9 @@ public class Level1 : MonoBehaviour {
 		dropDownMenu.namesToType = namesToType;
 		dropDownMenu.typeToNames = typeToNames;
 
-		whiteBackground = GameObject.Find ("white");
-		normalTutorial = GameObject.Find ("normalTutorial");
-		blogTutorial = GameObject.Find ("blogTutorial");
-		granTutorial = GameObject.Find ("granTutorial");
-		bfTutorial = GameObject.Find ("bfTutorial");
-		canvas = GameObject.Find ("Canvas");
-		credit = GameObject.Find ("credit");
-		pieceMenu = canvas.transform.Find("PieceMenu").gameObject;
-		bar2Inside = canvas.transform.Find("WinPopup/bar2Inside").gameObject;
-		barInside = canvas.transform.Find("barInside").gameObject;
-
 		audios = GetComponents<AudioSource>(); 
 
-		curLevel = 1;
+		curLevel = 2;
 		LoadLevelNumber(curLevel);
 	}
 
@@ -136,11 +135,26 @@ public class Level1 : MonoBehaviour {
 	void SetupUI()
 	{
 		Button resetButton = GameObject.Find ("Clear").GetComponent<Button>();
+		Button pieceMenuActivate = pieceMenu.transform.Find("Activate").gameObject.GetComponent<Button>();
+		Button pieceMenuPutBack = pieceMenu.transform.Find("Put Back").gameObject.GetComponent<Button>();
+		Button pieceMenuDeselect = pieceMenu.transform.Find("Deselect").gameObject.GetComponent<Button>();
+	
+		pieceMenuActivate.onClick.AddListener(ActivatePiece);
+		pieceMenuActivate.onClick.AddListener(ButtonPressedSound);
+
+		pieceMenuPutBack.onClick.AddListener(PutBackPiece);
+		pieceMenuPutBack.onClick.AddListener(ButtonPressedSound);
+
+		pieceMenuDeselect.onClick.AddListener(TurnOffPieceMenu);
+		pieceMenuDeselect.onClick.AddListener(ButtonPressedSound);
+
 
 		resetButton.onClick.AddListener (ResetPieces);
 		resetButton.onClick.AddListener (ButtonPressedSound);
+		
 		popupReset.onClick.AddListener (ResetPieces);
 		popupReset.onClick.AddListener (ButtonPressedSound);
+		
 		popupContinue.onClick.AddListener (LoadNext);
 		popupContinue.onClick.AddListener (ButtonPressedSound);
 
@@ -346,14 +360,6 @@ public class Level1 : MonoBehaviour {
 	void ButtonPressedSound() { audios[0].Play(); }
 	void PickUpPieceSound() { audios[1].Play(); }
 
-	void ActivateRumor(){
-		GameObject r = GameObject.FindGameObjectWithTag ("rumor");
-		if (r != null) {
-
-			r.GetComponent<Rumor>().Infect ();
-		}
-	}
-
 
 	// add a single piece with ID i to gameObjectBoard[r,c]
 	void AddPieceToBoard(int i, int r, int c)
@@ -443,6 +449,9 @@ public class Level1 : MonoBehaviour {
 
 	void ActivatePiece()
 	{
+
+		pieceMenu.SetActive(false);
+
 		int r = selectedRow;
 		int c = selectedCol;
 
@@ -471,6 +480,15 @@ public class Level1 : MonoBehaviour {
 
 			//play appropriate sound effect for the activated piece
 			PlayPieceSound(p);
+		}
+	}
+
+	// puts back a piece the player placed, if the piece is placed
+	void PutBackPiece()
+	{
+		if(gameObjectBoard[selectedRow,selectedCol].GetComponent<Person>().isPlaced)
+		{
+			//TODO
 		}
 	}
 
@@ -549,6 +567,7 @@ public class Level1 : MonoBehaviour {
 
 					// add the new piece to board
 					AddPieceToBoard(currentPiece, r, c);
+					gameObjectBoard[r,c].GetComponent<Person>().isPlaced = true;
 
 					// destroy the old white space
 					Destroy(hit.collider);
@@ -557,23 +576,24 @@ public class Level1 : MonoBehaviour {
 					audios[2].Play();
 				}
 
-				TurnOffPieceMenu();
-
 			}
 			// activate piece
 			else
 			{
 				gridBoard[r,c].GetComponent<Person>().Highlight();
-				pieceMenu.SetActive(true);
-				//TODO
+				Vector3 p = hit.transform.position;
+				if(hit.collider.tag.Equals("emptySpace"))
+				{
+					p = gameObjectBoard[r,c].transform.position;
+				}
 
-				pieceMenu.GetComponent<RectTransform>().position = (Vector2)Camera.main.WorldToScreenPoint(hit.transform.position) + new Vector2(0f, 100f);
+				pieceMenu.SetActive(true);
+				selectedRow = r;
+				selectedCol = c;
+
+				pieceMenu.GetComponent<RectTransform>().position = (Vector2)Camera.main.WorldToScreenPoint(p) + new Vector2(0f, 50f);
 				
 			}
-		}
-		else if(Input.GetMouseButtonDown(0))
-		{
-			TurnOffPieceMenu();
 		}
 	}
 
