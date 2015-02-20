@@ -5,13 +5,13 @@ using System.Collections.Generic;
 public class Normal : Person {
 	
 	private int range;
-	List<EmptySpace> targets;
 
 
 	// Use this for initialization
 	void Start () {
 		activated = false;
 		range = 1;
+		Init();
 
 	}
 

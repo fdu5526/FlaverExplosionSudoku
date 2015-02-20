@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class Blogger : Person {
 
 	private int range = 3;
-	List<EmptySpace> targets;
 	GameObject[,] board;
 	GameObject[,] grid;
 	int height;
@@ -13,6 +12,7 @@ public class Blogger : Person {
 
 	// Use this for initialization
 	void Start () {
+		Init();
 		activated = false;
 		board = GameObject.Find ("GameMaster").GetComponent<Level1>().gameObjectBoard;
 		grid = GameObject.Find ("GameMaster").GetComponent<Level1> ().gridBoard;

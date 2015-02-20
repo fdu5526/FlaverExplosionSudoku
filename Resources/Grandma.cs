@@ -5,11 +5,11 @@ using System.Collections.Generic;
 public class Grandma : Person {
 
 	private int range = 3;
-	List<EmptySpace> targets;
 
 	// not affected by dads
 	void Start () {
 		activated = false;
+		Init();
 	}
 	
 	override public List<Person> Activate (){
@@ -109,6 +109,8 @@ public class Grandma : Person {
 
 	
 	void OnMouseOver(){
+		if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+			return;
 		Highlight ();
 	}
 	

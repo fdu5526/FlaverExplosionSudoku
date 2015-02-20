@@ -19,6 +19,7 @@ public class EmptySpace : Person {
 
 	// Use this for initialization
 	void Start () {
+		Init();
 		isActivated = false;
 		isFlashing = false;
 	}

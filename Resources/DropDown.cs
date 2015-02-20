@@ -159,6 +159,8 @@ public class DropDown : MonoBehaviour {
 		Text button = nameToText[name];
 		int num = inventory[name];
 		button.text = num.ToString();
+
+		selection = t;
 	}
 
 	void setSelection(bool on, int s){

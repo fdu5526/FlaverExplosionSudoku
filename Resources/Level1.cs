@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 
@@ -96,7 +97,7 @@ public class Level1 : MonoBehaviour {
 
 		audios = GetComponents<AudioSource>(); 
 
-		curLevel = 2;
+		curLevel = 7;
 		LoadLevelNumber(curLevel);
 	}
 
@@ -247,13 +248,13 @@ public class Level1 : MonoBehaviour {
 		{
 			popupContinue.interactable = false;
 			popupContinue.image.sprite = continueGraphicGray;
-			//PlayWinJungle(false);TODO
+			PlayWinJungle(false);
 		}
 		else
 		{
 			popupContinue.interactable = true;
 			popupContinue.image.sprite = continueGraphic;
-			//PlayWinJungle(true);TODO
+			PlayWinJungle(true);
 		}
 
 
@@ -266,7 +267,8 @@ public class Level1 : MonoBehaviour {
 	{
 		audios[7].Stop();
 		audios[8].Stop();
-		switch(curLevel)
+
+		switch(curLevel % 3)
 		{
 			case 1:
 				audios[9].Play();
@@ -278,22 +280,7 @@ public class Level1 : MonoBehaviour {
 				audios[10].Play();
 				audios[11].Stop();
 				break;
-			case 3:
-				audios[9].Stop();
-				audios[10].Stop();
-				audios[11].Play();
-				break;
-			case 4:
-				audios[9].Play();
-				audios[10].Stop();
-				audios[11].Stop();
-				break;
-			case 5:
-				audios[9].Stop();
-				audios[10].Play();
-				audios[11].Stop();
-				break;
-			case 6:
+			case 0:
 				audios[9].Stop();
 				audios[10].Stop();
 				audios[11].Play();
@@ -307,7 +294,7 @@ public class Level1 : MonoBehaviour {
 	void ResetPieces()
 	{
 		// play different music based on level
-		//LevelMusicPlayer();TODO
+		LevelMusicPlayer();
 
 		winPanel.SetActive (false);
 		started = false;
@@ -507,8 +494,14 @@ public class Level1 : MonoBehaviour {
 			dropDownMenu.AddOneType(pieceType);
 
 			// remove the piece from the board
+			GameObject b = gridBoard[selectedRow, selectedCol];
+			Destroy(g.GetComponent<Person>());
+			Destroy(g.collider);
 			Destroy(g);
-			Destroy(gridBoard[selectedRow, selectedCol]);
+			Destroy(b.GetComponent<Person>());
+			Destroy(b.collider);
+			Destroy(b);
+		
 
 			// add a white space
 			AddPieceToBoard(0, selectedRow, selectedCol);
@@ -523,8 +516,6 @@ public class Level1 : MonoBehaviour {
 	// when player clicks away, turn off the piece menu
 	void TurnOffPieceMenu()
 	{
-		if(gridBoard[selectedRow,selectedCol] != null)
-			gridBoard[selectedRow,selectedCol].GetComponent<Person>().Unhighlight();
 		pieceMenu.SetActive(false);
 	}
 
@@ -572,6 +563,10 @@ public class Level1 : MonoBehaviour {
 		RaycastHit hit;
 		if(Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit))
 		{
+			
+			if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+				return;
+
 
 			// calculate this piece's index
 			int r = hit.transform.gameObject.GetComponent<Person>().y;
@@ -608,7 +603,6 @@ public class Level1 : MonoBehaviour {
 			// activate piece
 			else
 			{
-				gridBoard[r,c].GetComponent<Person>().Highlight();
 				
 				Vector3 p = hit.transform.position;
 				if(hit.collider.tag.Equals("emptySpace"))

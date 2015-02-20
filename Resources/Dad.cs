@@ -7,6 +7,7 @@ public class Dad : Person {
 	// No infection
 	void Start () {
 		activated = false;
+		Init();
 	}
 
 	override public List<Person> Activate (){
