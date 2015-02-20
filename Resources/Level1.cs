@@ -117,7 +117,7 @@ public class Level1 : MonoBehaviour {
 
 
 	// load the next level, or the credits
-	void LoadNext(){
+	public void LoadNext(){
 		winPanel.SetActive (false);
 		if (curLevel == maxLevel) {
 
@@ -168,7 +168,7 @@ public class Level1 : MonoBehaviour {
 	}
 
 
-	void LoadLevelNumber(int l)
+	public void LoadLevelNumber(int l)
 	{
 		dropDownMenu.destroyButtons ();
 
