@@ -28,7 +28,7 @@ public class EmptySpace : Person {
 	void Update () {
 		if(Time.time - startTime > maxSec && isFlashing)
 		{
-			gameObject.renderer.material.color = Color.white;
+			gameObject.GetComponent<Renderer>().material.color = Color.white;
 			isFlashing = false;
 		}
 
@@ -42,13 +42,13 @@ public class EmptySpace : Person {
  			return;
 
  		if (isActuallyEmpty && currentSelect < 0)
-			gameObject.renderer.material.color = Color.green;
+			gameObject.GetComponent<Renderer>().material.color = Color.green;
 		else if (isActuallyEmpty && currentSelect >= 0) {
 			GameObject[,] board = GameObject.Find ("GameMaster").GetComponent<Level1> ().gameObjectBoard;
 			this.Highlight();
 		}
 		else {
-			gameObject.renderer.material.color = blueColor;
+			gameObject.GetComponent<Renderer>().material.color = blueColor;
 			GameObject[,] board = GameObject.Find ("GameMaster").GetComponent<Level1> ().gameObjectBoard;
 			if(board[this.y, this.x] != null){
 				board[this.y, this.x].GetComponent<Person>().Highlight();
@@ -61,7 +61,7 @@ public class EmptySpace : Person {
  		if(isActivated)
  			return;
 
- 		gameObject.renderer.material.color = Color.white;
+ 		gameObject.GetComponent<Renderer>().material.color = Color.white;
 
 		if (!isActuallyEmpty) {
 			GameObject[,] board = GameObject.Find ("GameMaster").GetComponent<Level1> ().gameObjectBoard;
@@ -75,11 +75,11 @@ public class EmptySpace : Person {
  	}
 
 	public void TurnOn(){
-		gameObject.renderer.material.color = blueColor;
+		gameObject.GetComponent<Renderer>().material.color = blueColor;
 	}
 
 	public void TurnOff(){
-		gameObject.renderer.material.color = Color.white;
+		gameObject.GetComponent<Renderer>().material.color = Color.white;
 	
 	}
 	
@@ -405,7 +405,7 @@ public class EmptySpace : Person {
 		}
 		else
 		{
-			gameObject.renderer.material.color = blueColor;
+			gameObject.GetComponent<Renderer>().material.color = blueColor;
 			isActivated = true;
 
 			//TODO do i need this below?

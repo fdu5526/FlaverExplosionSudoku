@@ -496,10 +496,10 @@ public class Level1 : MonoBehaviour {
 			// remove the piece from the board
 			GameObject b = gridBoard[selectedRow, selectedCol];
 			Destroy(g.GetComponent<Person>());
-			Destroy(g.collider);
+			Destroy(g.GetComponent<Collider>());
 			Destroy(g);
 			Destroy(b.GetComponent<Person>());
-			Destroy(b.collider);
+			Destroy(b.GetComponent<Collider>());
 			Destroy(b);
 		
 
@@ -609,7 +609,12 @@ public class Level1 : MonoBehaviour {
 				{
 					p = gameObjectBoard[r,c].transform.position;
 				}
-				pieceMenu.GetComponent<RectTransform>().position = (Vector2)Camera.main.WorldToScreenPoint(p) + new Vector2(0f, 50f);
+
+				Vector2 pieceCameraPosition = (Vector2)Camera.main.WorldToScreenPoint(p);
+				if(pieceCameraPosition.y < 670)
+					pieceMenu.GetComponent<RectTransform>().position = pieceCameraPosition + new Vector2(0f, 50f);
+				else
+					pieceMenu.GetComponent<RectTransform>().position = pieceCameraPosition - new Vector2(0f, 150f);				
 
 				pieceMenu.SetActive(true);
 				selectedRow = r;
